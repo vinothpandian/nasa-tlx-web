@@ -1,0 +1,12 @@
+{
+  "env": {
+    "production": {
+      "plugins": [["emotion", { "hoist": true }]]
+    },
+    "development": {
+      "plugins": [["emotion", { "sourceMap": true, "autoLabel": true }]]
+    }
+  },
+  "presets": [["env", { "modules": false }], "react"],
+  "plugins": ["syntax-dynamic-import", "syntax-object-rest-spread", "transform-class-properties"]
+}
