@@ -2,20 +2,10 @@ import React from 'react';
 import { Switch, Route } from 'react-router';
 import { Container } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
-import Loadable from 'react-loadable';
 import Menubar from '../../components/Menubar';
 import { FluidContainer } from '../../components';
-import Loading from '../../components/Loading';
-
-const AboutTLX = Loadable({
-  loader: () => import('./AboutTLX'),
-  loading: Loading,
-});
-
-const Definitions = Loadable({
-  loader: () => import('./Definitions'),
-  loading: Loading,
-});
+import AboutTLX from './AboutTLX';
+import Definitions from './Definitions';
 
 const TLX = () => (
   <FluidContainer fluid>
