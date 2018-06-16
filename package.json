@@ -19,6 +19,7 @@
     "lodash": "^4.17.10",
     "material-icons": "^0.2.3",
     "prop-types": "^15.6.1",
+    "rc-slider": "^8.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-emotion": "^9.2.3",

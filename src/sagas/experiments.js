@@ -1,21 +1,39 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
-import { CREATE_EXPERIMENT_ASYNC, CREATE_EXPERIMENT } from '../actions/experiments';
-import { createExperiment } from '../components/firebaseDatabase';
+import {
+  CREATE_EXPERIMENT_ASYNC,
+  CREATE_EXPERIMENT,
+  STORE_DATA_ASYNC,
+  STORE_DATA,
+} from '../actions/experiments';
+import { createExperiment, storeData } from '../components/firebaseDatabase';
 import { store } from '../store/index';
 
 function* createExperimentAsync(action) {
-  const experimentRef = yield call(createExperiment, action.payload);
+  const { userID, payload } = action.payload;
+
+  const experimentRef = yield call(createExperiment, userID, payload);
   yield put({
     type: CREATE_EXPERIMENT,
     payload: {
-      ...action.payload,
+      ...payload,
       experimentRef,
     },
   });
-  yield store.dispatch(push(`/tlx/${action.payload.experimentID}/${action.payload.participantID}/aboutTLX`));
+  yield store.dispatch(push(`/tlx/${payload.expID}/${payload.partID}/aboutTLX`));
 }
 
-export default function* watchCreateExperimentAsync() {
+function* storeDataAsync(action) {
+  const { userID, path, payload } = action.payload;
+  yield call(storeData, userID, payload);
+  yield put({
+    type: STORE_DATA,
+    payload: payload.scale,
+  });
+  yield store.dispatch(push(path));
+}
+
+export default function* watchExperimentActions() {
   yield takeEvery(CREATE_EXPERIMENT_ASYNC, createExperimentAsync);
+  yield takeEvery(STORE_DATA_ASYNC, storeDataAsync);
 }

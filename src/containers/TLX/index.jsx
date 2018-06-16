@@ -6,6 +6,7 @@ import Menubar from '../../components/Menubar';
 import { FluidContainer } from '../../components';
 import AboutTLX from './AboutTLX';
 import Definitions from './Definitions';
+import RatingSheet from './RatingSheet';
 
 const TLX = () => (
   <FluidContainer fluid>
@@ -14,6 +15,7 @@ const TLX = () => (
       <Switch>
         <Route path="/tlx/:expID/:partID/aboutTLX" component={AboutTLX} />
         <Route path="/tlx/:expID/:partID/definitions" component={Definitions} />
+        <Route path="/tlx/:expID/:partID/ratingSheet" component={RatingSheet} />
       </Switch>
     </Container>
   </FluidContainer>

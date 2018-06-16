@@ -1,23 +1,28 @@
-import { handleAction } from 'redux-actions';
+import { handleActions } from 'redux-actions';
 import { Map } from 'immutable';
-import { CREATE_EXPERIMENT } from '../actions/experiments';
+import { CREATE_EXPERIMENT, STORE_DATA } from '../actions/experiments';
 
 const defaultState = new Map({
-  experimentID: '123',
-  participantID: '123',
+  expID: '123',
+  partID: '123',
   experimentRef: '123',
 });
 
-export default handleAction(
-  CREATE_EXPERIMENT,
-  (state, action) => {
-    const { experimentID, participantID, experimentRef } = action.payload;
+export default handleActions(
+  {
+    [CREATE_EXPERIMENT]: (state, action) => {
+      const { expID, partID, experimentRef } = action.payload;
 
-    return state.merge({
-      experimentID,
-      participantID,
-      experimentRef,
-    });
+      return state.merge({
+        expID,
+        partID,
+        experimentRef,
+      });
+    },
+    [STORE_DATA]: (state, action) =>
+      state.merge({
+        scale: action.payload,
+      }),
   },
   defaultState,
 );

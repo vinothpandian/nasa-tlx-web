@@ -33,12 +33,12 @@ class ExperimentCard extends Component {
     super(props);
 
     this.state = {
-      experimentID: {
+      expID: {
         value: shortID(),
         error: false,
         errorText: 'Please enter an experiment ID',
       },
-      participantID: {
+      partID: {
         value: shortID(),
         error: false,
         errorText: 'Please enter an participant ID',
@@ -59,27 +59,37 @@ class ExperimentCard extends Component {
     }));
   };
 
-  setRandomParticipantID = () => {
-    this.setObjectState('participantID', 'value', shortID());
+  setRandomPartID = () => {
+    this.setObjectState('partID', 'value', shortID());
   };
 
   handleClick = () => {
-    const { experimentID, participantID } = this.state;
+    const { expID, partID } = this.state;
+    const { userID } = this.props;
+
     let error = false;
 
-    if (!experimentID.value && experimentID.value === '') {
-      this.setObjectState('experimentID', 'error', true);
+    if (!expID.value && expID.value === '') {
+      this.setObjectState('expID', 'error', true);
       error = true;
     }
 
-    if (!participantID.value && participantID.value === '') {
-      this.setObjectState('participantID', 'error', true);
+    if (!partID.value && partID.value === '') {
+      this.setObjectState('partID', 'error', true);
       error = true;
     }
 
     if (error) return;
 
-    this.props.createExperimentAsync(this.props.userID, experimentID.value, participantID.value);
+    const payload = {
+      userID,
+      payload: {
+        expID: expID.value,
+        partID: partID.value,
+      },
+    };
+
+    this.props.createExperimentAsync(payload);
   };
 
   handleChange = prop => (event) => {
@@ -90,7 +100,7 @@ class ExperimentCard extends Component {
   };
 
   render() {
-    const { experimentID, participantID } = this.state;
+    const { expID, partID } = this.state;
     const { username } = this.props;
 
     return (
@@ -113,24 +123,24 @@ class ExperimentCard extends Component {
                   <CardText>Fill the details below to get started</CardText>
                   <Form>
                     <InputWithFeedback
-                      name="experimentID"
+                      name="expID"
                       label="Experiment ID"
-                      value={experimentID.value}
-                      error={experimentID.error}
-                      errorText={experimentID.errorText}
-                      handleChange={this.handleChange('experimentID')}
+                      value={expID.value}
+                      error={expID.error}
+                      errorText={expID.errorText}
+                      handleChange={this.handleChange('expID')}
                     />
                     <InputWithFeedback
-                      name="participantID"
+                      name="partID"
                       label="Participant ID"
-                      value={participantID.value}
-                      error={participantID.error}
-                      errorText={participantID.errorText}
+                      value={partID.value}
+                      error={partID.error}
+                      errorText={partID.errorText}
                       buttonLabel="Random"
                       buttonColor="secondary"
                       addon
-                      buttonAction={this.setRandomParticipantID}
-                      handleChange={this.handleChange('participantID')}
+                      buttonAction={this.setRandomPartID}
+                      handleChange={this.handleChange('partID')}
                     />
                   </Form>
                 </CardBody>
