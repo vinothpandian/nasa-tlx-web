@@ -10,38 +10,32 @@ import Slider from './Slider';
 import { storeDataAsync } from '../../../actions/experiments';
 
 const scales = {
-  mental: {
-    title: 'Mental Demand',
+  'Mental Demand': {
     description: 'How mentally demanding was the task?',
     leftValue: 'Low',
     rightValue: 'High',
   },
-  physical: {
-    title: 'Physical Demand',
+  'Physical Demand': {
     description: 'How physically demanding was the task?',
     leftValue: 'Low',
     rightValue: 'High',
   },
-  temporal: {
-    title: 'Temporal Demand',
+  'Temporal Demand': {
     description: 'How hurried or rushed was the pace of the task?',
     leftValue: 'Low',
     rightValue: 'High',
   },
-  performance: {
-    title: 'Performance',
+  Performance: {
     description: 'How successful were you in accomplishing the task?',
     leftValue: 'Poor',
     rightValue: 'Good',
   },
-  effort: {
-    title: 'Effort',
+  Effort: {
     description: 'How hard did you have to work to accomplish your level of performance?',
     leftValue: 'Low',
     rightValue: 'High',
   },
-  frustration: {
-    title: 'Frustration Level',
+  'Frustration Level': {
     description: 'How insecure, discouraged, irritated, stressed, or annoyed were you?',
     leftValue: 'Low',
     rightValue: 'High',
@@ -54,12 +48,12 @@ const RatingSheet = class extends React.Component {
 
     this.state = {
       scale: new Map({
-        mental: 50,
-        physical: 50,
-        temporal: 50,
-        performance: 50,
-        effort: 50,
-        frustration: 50,
+        'Mental Demand': 50,
+        'Physical Demand': 50,
+        'Temporal Demand': 50,
+        Performance: 50,
+        Effort: 50,
+        'Frustration Level': 50,
       }),
       choose: [0, 3],
     };
@@ -110,7 +104,7 @@ const RatingSheet = class extends React.Component {
           <Slider
             key={key}
             id={key}
-            title={scale.title}
+            title={key}
             description={scale.description}
             leftValue={scale.leftValue}
             rightValue={scale.rightValue}
