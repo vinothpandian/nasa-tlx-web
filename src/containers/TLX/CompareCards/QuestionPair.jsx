@@ -1,25 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Col, Row } from 'reactstrap';
+import { Button, Col, Row, Card, CardText } from 'reactstrap';
+import { shortDefinitions } from '../../../assets/definitions';
 
 const QuestionPair = (props) => {
   const Option = props.options.map(option => (
-    <Col xs={12}>
-      <Button className="w-75" color="primary" name={option} onClick={props.handleClick}>
+    <Card tag={Col} key={option} lg={5} className="p-2 mt-4 mt-lg-0" body>
+      <Button color="primary" name={option} onClick={props.handleClick}>
         {option}
       </Button>
-    </Col>
+      <CardText className="p-2 text-left">{shortDefinitions[option].description}</CardText>
+    </Card>
   ));
 
-  return (
-    <Row className="text-center align-items-center">
-      {Option[0]}
-      <Col xs={12} className="p-2">
-        <span className="lead">or</span>
-      </Col>
-      {Option[1]}
-    </Row>
-  );
+  return <Row className="text-center justify-content-around align-items-stretch">{Option}</Row>;
 };
 
 QuestionPair.propTypes = {

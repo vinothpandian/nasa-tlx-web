@@ -35,9 +35,16 @@ const CompareCards = class extends React.Component {
     const { id } = event.target;
 
     this.setState(prevState => ({
+      workload: prevState.workload.updateIn([id], val => val + 1),
+    }));
+
+    if (this.state.choices.isEmpty()) {
+      return;
+    }
+
+    this.setState(prevState => ({
       choices: prevState.choices.shift(),
       currentQuestion: prevState.choices.first(),
-      workload: prevState.workload.updateIn([id], val => val + 1),
     }));
   }
 

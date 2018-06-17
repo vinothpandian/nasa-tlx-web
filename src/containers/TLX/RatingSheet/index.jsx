@@ -8,39 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Slider from './Slider';
 import { storeDataAsync } from '../../../actions/experiments';
-
-const scales = {
-  'Mental Demand': {
-    description: 'How mentally demanding was the task?',
-    leftValue: 'Low',
-    rightValue: 'High',
-  },
-  'Physical Demand': {
-    description: 'How physically demanding was the task?',
-    leftValue: 'Low',
-    rightValue: 'High',
-  },
-  'Temporal Demand': {
-    description: 'How hurried or rushed was the pace of the task?',
-    leftValue: 'Low',
-    rightValue: 'High',
-  },
-  Performance: {
-    description: 'How successful were you in accomplishing the task?',
-    leftValue: 'Poor',
-    rightValue: 'Good',
-  },
-  Effort: {
-    description: 'How hard did you have to work to accomplish your level of performance?',
-    leftValue: 'Low',
-    rightValue: 'High',
-  },
-  'Frustration Level': {
-    description: 'How insecure, discouraged, irritated, stressed, or annoyed were you?',
-    leftValue: 'Low',
-    rightValue: 'High',
-  },
-};
+import { shortDefinitions } from '../../../assets/definitions';
 
 const RatingSheet = class extends React.Component {
   constructor(props) {
@@ -95,10 +63,10 @@ const RatingSheet = class extends React.Component {
   }
 
   render() {
-    const sliders = Object.keys(scales)
+    const sliders = Object.keys(shortDefinitions)
       .splice(...this.state.choose)
       .map((key) => {
-        const scale = scales[key];
+        const scale = shortDefinitions[key];
 
         return (
           <Slider
