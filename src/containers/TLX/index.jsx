@@ -26,7 +26,7 @@ const TLX = class extends React.Component {
       store.dispatch(push('/'));
     }
 
-    if (expID === '123' || partID === '123') {
+    if (expID === '' || partID === '') {
       this.props.syncExpDataAsync({ userID, ...this.props.match.params });
     }
   }
@@ -34,7 +34,7 @@ const TLX = class extends React.Component {
   render() {
     const { expID, partID } = this.props;
 
-    if (expID === '123' || partID === '123') return <Loading fullScreen />;
+    if (expID === '' || partID === '') return <Loading fullScreen />;
 
     return (
       <FluidContainer fluid>
@@ -52,11 +52,17 @@ const TLX = class extends React.Component {
   }
 };
 
+TLX.defaultProps = {
+  expID: '',
+  partID: '',
+  completed: false,
+};
+
 TLX.propTypes = {
-  expID: PropTypes.string.isRequired,
-  partID: PropTypes.string.isRequired,
+  expID: PropTypes.string,
+  partID: PropTypes.string,
   userID: PropTypes.string.isRequired,
-  completed: PropTypes.bool.isRequired,
+  completed: PropTypes.bool,
   syncExpDataAsync: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
