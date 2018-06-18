@@ -19,10 +19,7 @@ export default handleActions(
         experimentRef,
       });
     },
-    [STORE_DATA]: (state, action) =>
-      state.merge({
-        scale: action.payload,
-      }),
+    [STORE_DATA]: (state, action) => state.merge(action.payload),
   },
   defaultState,
 );

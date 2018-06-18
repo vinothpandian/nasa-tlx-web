@@ -6,7 +6,9 @@ firebase.initializeApp(firebaseConfig);
 
 export const database = firebase.database();
 
-export const createExperiment = async (userID, { expID, partID }) => 'ref';
+export const createExperiment = async (userID, expID, partID) => 'ref';
 // const experimentRef = await database.ref(`${userID}/${expID}/${partID}`);
 
-export const storeData = async (userID, { expID, partID, data }) => 'yes';
+export const storeData = async (experimentRef, data) => 'yes';
+
+export const storeState = async (experimentRef, data) => 'yes';

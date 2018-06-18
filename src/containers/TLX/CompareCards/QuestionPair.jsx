@@ -6,7 +6,7 @@ import { shortDefinitions } from '../../../assets/definitions';
 const QuestionPair = (props) => {
   const Option = props.options.map(option => (
     <Card tag={Col} key={option} lg={5} className="p-2 mt-4 mt-lg-0" body>
-      <Button color="primary" name={option} onClick={props.handleClick}>
+      <Button color="primary" id={option} onClick={props.handleClick}>
         {option}
       </Button>
       <CardText className="p-2 text-left">{shortDefinitions[option].description}</CardText>

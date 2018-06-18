@@ -23,7 +23,7 @@ const Slider = props => (
             min={0}
             max={100}
             step={10}
-            defaultValue={50}
+            value={props.value}
             marks={marks}
             included={false}
             onChange={(value) => {
@@ -44,6 +44,7 @@ Slider.propTypes = {
   leftValue: PropTypes.string.isRequired,
   rightValue: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 export default Slider;

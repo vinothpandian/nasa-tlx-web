@@ -81,15 +81,7 @@ class ExperimentCard extends Component {
 
     if (error) return;
 
-    const payload = {
-      userID,
-      payload: {
-        expID: expID.value,
-        partID: partID.value,
-      },
-    };
-
-    this.props.createExperimentAsync(payload);
+    this.props.createExperimentAsync(userID, expID.value, partID.value);
   };
 
   handleChange = prop => (event) => {

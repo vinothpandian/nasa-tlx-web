@@ -5,35 +5,58 @@ import {
   CREATE_EXPERIMENT,
   STORE_DATA_ASYNC,
   STORE_DATA,
+  SYNC_EXP_DATA,
 } from '../actions/experiments';
 import { createExperiment, storeData } from '../components/firebaseDatabase';
 import { store } from '../store/index';
 
 function* createExperimentAsync(action) {
-  const { userID, payload } = action.payload;
+  const { userID, expID, partID } = action.payload;
 
-  const experimentRef = yield call(createExperiment, userID, payload);
+  const experimentRef = yield call(createExperiment, userID, expID, partID);
   yield put({
     type: CREATE_EXPERIMENT,
     payload: {
-      ...payload,
+      expID,
+      partID,
       experimentRef,
     },
   });
-  yield store.dispatch(push(`/tlx/${payload.expID}/${payload.partID}/aboutTLX`));
+  yield store.dispatch(push(`/tlx/${expID}/${partID}/aboutTLX`));
 }
 
 function* storeDataAsync(action) {
-  const { userID, path, payload } = action.payload;
-  yield call(storeData, userID, payload);
+  const {
+    experimentRef, completed, data, experimentEnd,
+  } = action.payload;
+  yield call(storeData, experimentRef, data);
   yield put({
     type: STORE_DATA,
-    payload: payload.scale,
+    payload: data,
+    experimentEnd,
   });
-  yield store.dispatch(push(path));
+
+  if (completed) yield store.dispatch(push(action.payload.path));
+
+  if (experimentEnd) localStorage.clear();
+}
+
+function* syncExpDataAsync(action) {
+  const { userID, expID, partID } = action.payload;
+
+  const experimentRef = yield call(createExperiment, userID, expID, partID);
+  yield put({
+    type: CREATE_EXPERIMENT,
+    payload: {
+      expID,
+      partID,
+      experimentRef,
+    },
+  });
 }
 
 export default function* watchExperimentActions() {
   yield takeEvery(CREATE_EXPERIMENT_ASYNC, createExperimentAsync);
   yield takeEvery(STORE_DATA_ASYNC, storeDataAsync);
+  yield takeEvery(SYNC_EXP_DATA, syncExpDataAsync);
 }
