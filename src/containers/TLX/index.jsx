@@ -1,27 +1,41 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router';
 import { Container } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
 import Menubar from '../../components/Menubar';
 import { FluidContainer } from '../../components';
 import AboutTLX from './AboutTLX';
 import Definitions from './Definitions';
 import RatingSheet from './RatingSheet';
 import CompareCards from './CompareCards';
-import { syncExpData } from '../../actions/experiments';
+import { syncExpDataAsync } from '../../actions/experiments';
+import { store } from '../../store';
+import Loading from '../../components/Loading';
 
 const TLX = class extends React.Component {
   componentDidMount() {
-    const { expID, partID, userID } = this.props;
+    const {
+      expID, partID, userID, completed,
+    } = this.props;
+
+    if (completed) {
+      store.dispatch(push('/'));
+    }
 
     if (expID === '123' || partID === '123') {
-      this.props.syncExpData({ userID, ...this.props.match.params });
+      this.props.syncExpDataAsync({ userID, ...this.props.match.params });
     }
   }
 
   render() {
+    const { expID, partID } = this.props;
+
+    if (expID === '123' || partID === '123') return <Loading fullScreen />;
+
     return (
       <FluidContainer fluid>
         <Menubar />
@@ -38,16 +52,31 @@ const TLX = class extends React.Component {
   }
 };
 
+TLX.propTypes = {
+  expID: PropTypes.string.isRequired,
+  partID: PropTypes.string.isRequired,
+  userID: PropTypes.string.isRequired,
+  completed: PropTypes.bool.isRequired,
+  syncExpDataAsync: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      expID: PropTypes.string.isRequired,
+      partID: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
+
 const mapStateToProps = state => ({
   expID: state.experiment.get('expID'),
   partID: state.experiment.get('partID'),
   userID: state.user.get('userID'),
+  completed: state.experiment.get('completed'),
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      syncExpData,
+      syncExpDataAsync,
     },
     dispatch,
   );

@@ -7,7 +7,7 @@ function QuestionCard(props) {
   return (
     <Card>
       <CardHeader>
-        <h5>Question {15 - props.qNo} of 15</h5>
+        <h5>Question {16 - props.qNo} of 15</h5>
       </CardHeader>
       <CardBody>
         <Row className="text-center justify-content-center align-items-center p-4">

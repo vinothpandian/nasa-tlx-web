@@ -36,7 +36,9 @@ const RatingSheet = class extends React.Component {
     return true;
   }
 
-  handleChange(key, value) {
+  handleChange(key, sliderValue) {
+    const value = key === 'Performance' ? 100 - sliderValue : sliderValue;
+
     this.setState(prevState => ({
       scale: {
         ...prevState.scale,
@@ -54,6 +56,7 @@ const RatingSheet = class extends React.Component {
       data: {
         scale,
       },
+      completed: false,
     };
 
     if (_.isEqual(choose, [0, 3])) {
@@ -116,7 +119,7 @@ const RatingSheet = class extends React.Component {
 RatingSheet.propTypes = {
   storeDataAsync: PropTypes.func.isRequired,
   storeStateAsync: PropTypes.func.isRequired,
-  experimentRef: PropTypes.string.isRequired,
+  experimentRef: PropTypes.shape().isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,

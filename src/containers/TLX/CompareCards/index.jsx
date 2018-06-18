@@ -9,6 +9,7 @@ import definitions from '../../../assets/definitions';
 import QuestionCard from './QuestionCard';
 import { storeDataAsync } from '../../../actions/experiments';
 import { storeStateAsync } from '../../../actions/state';
+import Loading from '../../../components/Loading';
 
 const CompareCards = class extends React.Component {
   constructor(props) {
@@ -20,8 +21,7 @@ const CompareCards = class extends React.Component {
     ));
 
     const newState = JSON.parse(localStorage.getItem('compareCards')) || {
-      choices: _.drop(choices),
-      currentQuestion: choices[0],
+      choices,
       workload: {
         'Mental Demand': 0,
         'Physical Demand': 0,
@@ -46,39 +46,53 @@ const CompareCards = class extends React.Component {
     return true;
   }
 
+  componentDidUpdate() {
+    const { experimentRef, expID, partID } = this.props;
+    if (_.isEmpty(this.state.choices)) {
+      this.props.storeDataAsync({
+        experimentRef,
+        data: {
+          workload: this.state.workload,
+        },
+        path: `/end/${expID}/${partID}`,
+        completed: true,
+        experimentEnd: true,
+      });
+    }
+  }
+
   handleClick(event) {
     const { id } = event.target;
-
-    this.setState(prevState => ({
-      workload: { ...prevState.workload, [id]: prevState.workload[id] + 1 },
-    }));
-
     const { experimentRef } = this.props;
     const { workload } = this.state;
 
+    const newState = { ...workload, [id]: workload[id] + 1 };
+
+    this.setState({
+      workload: newState,
+    });
+
     const payload = {
       experimentRef,
-      path: '/end',
       data: {
-        workload,
+        workload: newState,
       },
+      completed: false,
     };
-
-    if (_.isEmpty(this.state.choices)) {
-      this.props.storeDataAsync({ ...payload, completed: true, experimentEnd: true });
-      return;
-    }
 
     this.props.storeDataAsync(payload);
 
     this.setState(prevState => ({
       choices: _.drop(prevState.choices),
-      currentQuestion: prevState.choices[0],
     }));
   }
 
   render() {
-    const { choices, currentQuestion } = this.state;
+    const { choices } = this.state;
+
+    if (_.isEmpty(choices)) return <Loading />;
+
+    const currentQuestion = choices[0];
 
     return (
       <Container>
@@ -97,12 +111,16 @@ const CompareCards = class extends React.Component {
 };
 
 CompareCards.propTypes = {
+  expID: PropTypes.string.isRequired,
+  partID: PropTypes.string.isRequired,
   storeDataAsync: PropTypes.func.isRequired,
   storeStateAsync: PropTypes.func.isRequired,
-  experimentRef: PropTypes.string.isRequired,
+  experimentRef: PropTypes.shape().isRequired,
 };
 
 const mapStateToProps = state => ({
+  expID: state.experiment.get('expID'),
+  partID: state.experiment.get('partID'),
   experimentRef: state.experiment.get('experimentRef'),
 });
 

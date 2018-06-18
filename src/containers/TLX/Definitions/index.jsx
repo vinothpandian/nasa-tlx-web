@@ -1,12 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card, CardBody, Col, Row, CardHeader, CardFooter, Button } from 'reactstrap';
 import { NavLink, withRouter } from 'react-router-dom';
 import definitions from '../../../assets/definitions';
 
-const DefinitionsModal = (props) => {
+const Definitions = (props) => {
   const { expID, partID } = props.match.params;
-
-  /* TODO: Check whether params match online and redirect to home '/' if not found */
 
   const data = Object.keys(definitions).map(key => (
     <React.Fragment key={key}>
@@ -34,4 +33,13 @@ const DefinitionsModal = (props) => {
   );
 };
 
-export default withRouter(DefinitionsModal);
+Definitions.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      expID: PropTypes.string.isRequired,
+      partID: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
+
+export default withRouter(Definitions);

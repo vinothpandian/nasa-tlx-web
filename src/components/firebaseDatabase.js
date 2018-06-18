@@ -6,9 +6,29 @@ firebase.initializeApp(firebaseConfig);
 
 export const database = firebase.database();
 
-export const createExperiment = async (userID, expID, partID) => 'ref';
-// const experimentRef = await database.ref(`${userID}/${expID}/${partID}`);
+export const createExperiment = async (userID, expID, partID) => {
+  const experimentRef = await database.ref(`${userID}/${expID}/${partID}`);
+  const data = await experimentRef.once('value');
+  const status = data.exists();
 
-export const storeData = async (experimentRef, data) => 'yes';
+  experimentRef.set({
+    completed: false,
+  });
 
-export const storeState = async (experimentRef, data) => 'yes';
+  return { experimentRef, status };
+};
+
+export const syncExperiment = async (userID, expID, partID) => {
+  const experimentRef = await database.ref(`${userID}/${expID}/${partID}`);
+
+  const data = await experimentRef.once('value');
+
+  return {
+    experimentRef,
+    data: 'data',
+  };
+};
+
+export const storeData = async (experimentRef, data) => {
+  await experimentRef.update(data);
+};

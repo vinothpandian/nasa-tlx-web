@@ -21,3 +21,15 @@ export const storeDataAsync = createAction(STORE_DATA_ASYNC);
 
 export const SYNC_EXP_DATA = 'SYNC_EXP_DATA';
 export const syncExpData = createAction(SYNC_EXP_DATA);
+
+export const SYNC_EXP_DATA_ASYNC = 'SYNC_EXP_DATA_ASYNC';
+export const syncExpDataAsync = createAction(SYNC_EXP_DATA_ASYNC);
+
+export const EXPERIMENT_COMPLETE = 'EXPERIMENT_COMPLETE';
+export const experimentComplete = createAction(EXPERIMENT_COMPLETE);
+
+export const CALCULATE_RESULT = 'CALCULATE_RESULT';
+export const calculateResult = createAction(CALCULATE_RESULT);
+
+export const PARTICIPANT_EXISTS = 'PARTICIPANT_EXISTS';
+export const participantExists = createAction(PARTICIPANT_EXISTS);

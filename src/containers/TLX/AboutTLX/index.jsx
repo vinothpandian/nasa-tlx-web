@@ -1,12 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Button, Card, CardBody, CardFooter } from 'reactstrap';
 import { NavLink, withRouter } from 'react-router-dom';
 import Paragraph from '../../../components/Paragraph';
 
 const AboutTLX = (props) => {
   const { expID, partID } = props.match.params;
-
-  /* TODO: Check whether params match online and redirect to home '/' if not found */
 
   return (
     <Row>
@@ -42,6 +41,15 @@ const AboutTLX = (props) => {
       </Col>
     </Row>
   );
+};
+
+AboutTLX.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      expID: PropTypes.string.isRequired,
+      partID: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default withRouter(AboutTLX);

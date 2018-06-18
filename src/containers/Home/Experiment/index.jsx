@@ -13,6 +13,7 @@ import {
   CardText,
   CardFooter,
   Button,
+  Alert,
 } from 'reactstrap';
 import { createExperimentAsync } from '../../../actions/experiments';
 import { FluidContainer, FullHeightRow } from '../../../components';
@@ -27,19 +28,22 @@ class ExperimentCard extends Component {
     userID: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     createExperimentAsync: PropTypes.func.isRequired,
+    participantExists: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
     super(props);
 
+    localStorage.clear();
+
     this.state = {
       expID: {
-        value: shortID(),
+        value: 'Test',
         error: false,
         errorText: 'Please enter an experiment ID',
       },
       partID: {
-        value: shortID(),
+        value: 'P1',
         error: false,
         errorText: 'Please enter an participant ID',
       },
@@ -135,6 +139,7 @@ class ExperimentCard extends Component {
                       handleChange={this.handleChange('partID')}
                     />
                   </Form>
+                  {this.props.participantExists && <Alert color="danger">User exists</Alert>}
                 </CardBody>
                 <CardFooter>
                   <Button onClick={this.handleClick} className="px-5" color="primary">
@@ -153,6 +158,7 @@ class ExperimentCard extends Component {
 const mapStateToProps = state => ({
   userID: state.user.get('userID'),
   username: state.user.get('username'),
+  participantExists: state.experiment.get('participantExists'),
 });
 
 const mapDispatchToProps = dispatch =>

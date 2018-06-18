@@ -6,23 +6,50 @@ import {
   STORE_DATA_ASYNC,
   STORE_DATA,
   SYNC_EXP_DATA,
+  SYNC_EXP_DATA_ASYNC,
+  EXPERIMENT_COMPLETE,
+  PARTICIPANT_EXISTS,
 } from '../actions/experiments';
-import { createExperiment, storeData } from '../components/firebaseDatabase';
+import { createExperiment, storeData, syncExperiment } from '../components/firebaseDatabase';
 import { store } from '../store/index';
 
 function* createExperimentAsync(action) {
   const { userID, expID, partID } = action.payload;
 
-  const experimentRef = yield call(createExperiment, userID, expID, partID);
+  const { experimentRef, status } = yield call(createExperiment, userID, expID, partID);
+
+  if (!status) {
+    yield put({
+      type: CREATE_EXPERIMENT,
+      payload: {
+        expID,
+        partID,
+        experimentRef,
+        completed: false,
+        participantExists: false,
+      },
+    });
+    yield store.dispatch(push(`/tlx/${expID}/${partID}/aboutTLX`));
+  } else {
+    yield put({
+      type: PARTICIPANT_EXISTS,
+    });
+  }
+}
+
+function* syncExpDataAsync(action) {
+  const { userID, expID, partID } = action.payload;
+
+  const { experimentRef, data } = yield call(syncExperiment, userID, expID, partID);
   yield put({
-    type: CREATE_EXPERIMENT,
+    type: SYNC_EXP_DATA,
     payload: {
       expID,
       partID,
       experimentRef,
+      ...data,
     },
   });
-  yield store.dispatch(push(`/tlx/${expID}/${partID}/aboutTLX`));
 }
 
 function* storeDataAsync(action) {
@@ -33,30 +60,20 @@ function* storeDataAsync(action) {
   yield put({
     type: STORE_DATA,
     payload: data,
-    experimentEnd,
   });
 
   if (completed) yield store.dispatch(push(action.payload.path));
 
-  if (experimentEnd) localStorage.clear();
-}
-
-function* syncExpDataAsync(action) {
-  const { userID, expID, partID } = action.payload;
-
-  const experimentRef = yield call(createExperiment, userID, expID, partID);
-  yield put({
-    type: CREATE_EXPERIMENT,
-    payload: {
-      expID,
-      partID,
-      experimentRef,
-    },
-  });
+  if (experimentEnd) {
+    yield call(storeData, experimentRef, { completed: true });
+    yield put({
+      type: EXPERIMENT_COMPLETE,
+    });
+  }
 }
 
 export default function* watchExperimentActions() {
   yield takeEvery(CREATE_EXPERIMENT_ASYNC, createExperimentAsync);
+  yield takeEvery(SYNC_EXP_DATA_ASYNC, syncExpDataAsync);
   yield takeEvery(STORE_DATA_ASYNC, storeDataAsync);
-  yield takeEvery(SYNC_EXP_DATA, syncExpDataAsync);
 }
