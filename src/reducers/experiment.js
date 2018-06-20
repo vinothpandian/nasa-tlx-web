@@ -50,12 +50,11 @@ export default handleActions(
         .get('scale')
         .map((value, key) => value * state.get('workload').get(key));
 
-      // TODO: Round the value
-      const weightedRating = adjustedRating.reduce((sum, x) => sum + x, 0) / 15;
+      const weightedRating = (adjustedRating.reduce((sum, x) => sum + x, 0) / 15).toFixed(2);
 
       const calculatedData = {
         adjustedRating: adjustedRating.toJS(),
-        weightedRating,
+        weightedRating: parseFloat(weightedRating),
         completed: true,
         date: moment().format('MMMM Do YYYY, h:mm:ss a'),
       };

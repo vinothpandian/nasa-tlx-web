@@ -54,8 +54,6 @@ class ExperimentCard extends Component {
   shouldComponentUpdate(nextProps) {
     this.participantExists = nextProps.participantExists;
 
-    console.log(nextProps.participantExists);
-
     return true;
   }
 

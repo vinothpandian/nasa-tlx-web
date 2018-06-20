@@ -45,9 +45,9 @@ const TLX = class extends React.Component {
   }
 
   render() {
-    const { expID, partID } = this.props;
+    const { expID, partID, completed } = this.props;
 
-    if (expID === '' || partID === '') return <Loading fullScreen />;
+    if (expID === '' || partID === '' || completed) return <Loading fullScreen />;
 
     return (
       <FluidContainer fluid>

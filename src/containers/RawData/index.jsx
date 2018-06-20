@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Container, Row, Col, Card, CardHeader } from 'reactstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { push } from 'react-router-redux';
 import { FluidContainer } from '../../components';
 import Menubar from '../../components/Menubar';
 import UserNav from '../../components/UserNav';
@@ -10,7 +11,6 @@ import { syncExpDataAsync } from '../../actions/experiments';
 import DataDisplay from './DataDisplay';
 import Loading from '../../components/Loading';
 import { store } from '../../store/index';
-import { push } from 'react-router-redux';
 
 const RawData = class extends React.Component {
   componentDidMount() {
@@ -22,8 +22,7 @@ const RawData = class extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     if (!nextProps.experiment.completed || !nextProps.participantExists) {
-      console.log(nextProps);
-      // store.dispatch(push('/'));
+      store.dispatch(push('/'));
       return false;
     }
 
@@ -60,8 +59,13 @@ const RawData = class extends React.Component {
   }
 };
 
+RawData.defaultProps = {
+  participantExists: true,
+};
+
 RawData.propTypes = {
   syncExpDataAsync: PropTypes.func.isRequired,
+  participantExists: PropTypes.bool,
   experiment: PropTypes.shape().isRequired,
   userID: PropTypes.string.isRequired,
   match: PropTypes.shape({
@@ -75,6 +79,7 @@ RawData.propTypes = {
 const mapStateToProps = state => ({
   userID: state.user.get('userID'),
   experiment: state.experiment.toJS(),
+  participantExists: state.experiment.get('participantExists'),
 });
 
 const mapDispatchToProps = dispatch =>
