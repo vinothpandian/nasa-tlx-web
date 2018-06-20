@@ -14,10 +14,10 @@ const Routes = () => (
     <Switch>
       <Route exact path="/" component={Home} />
       <Route path="/tlx/:expID/:partID" component={TLX} />
-      <Route path="/end/:expID/:partID" component={End} />
+      <Route exact path="/end/:expID/:partID" component={End} />
       <Route path="/rawData/:expID/:partID" component={RawData} />
       <Route path="/dashboard" component={RawData} />
-      <Route path="/error" component={ErrorPage} />
+      <Route exact path="/error" component={ErrorPage} />
     </Switch>
   </ConnectedRouter>
 );

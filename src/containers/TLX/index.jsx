@@ -36,7 +36,7 @@ const TLX = class extends React.Component {
   shouldComponentUpdate(nextProps) {
     const { completed, participantExists } = nextProps;
 
-    if (completed || !participantExists) {
+    if (!participantExists || completed === true) {
       store.dispatch(push('/error'));
       return false;
     }

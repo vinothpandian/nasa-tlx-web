@@ -58,7 +58,6 @@ function* syncExpDataAsync(action) {
     yield put({
       type: PUSH_TO_STATE,
       payload: {
-        completed: true,
         participantExists: false,
       },
     });
@@ -100,7 +99,6 @@ function* storeCompareCards(action) {
     yield store.dispatch(push(path));
   }
 }
-
 
 export default function* watchExperimentActions() {
   yield takeEvery(CREATE_EXPERIMENT_ASYNC, createExperimentAsync);

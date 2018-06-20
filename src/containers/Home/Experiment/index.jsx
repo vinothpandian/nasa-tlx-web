@@ -13,9 +13,9 @@ import {
   CardText,
   CardFooter,
   Button,
-  Alert,
+  UncontrolledAlert,
 } from 'reactstrap';
-import { createExperimentAsync, participantExists } from '../../../actions/experiments';
+import { createExperimentAsync, clearExperimentData } from '../../../actions/experiments';
 import { FluidContainer, FullHeightRow } from '../../../components';
 import Menubar from '../../../components/Menubar';
 import UserNav from '../../../components/UserNav';
@@ -28,6 +28,9 @@ class ExperimentCard extends Component {
     super(props);
 
     localStorage.clear();
+    props.clearExperimentData();
+
+    this.participantExists = false;
 
     this.state = {
       expID: {
@@ -46,6 +49,14 @@ class ExperimentCard extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.setObjectState = this.setObjectState.bind(this);
     this.setRandomPartID = this.setRandomPartID.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    this.participantExists = nextProps.participantExists;
+
+    console.log(nextProps.participantExists);
+
+    return true;
   }
 
   setObjectState(obj, key, value) {
@@ -133,7 +144,9 @@ class ExperimentCard extends Component {
                       handleChange={this.handleChange('partID')}
                     />
                   </Form>
-                  {this.props.participantExists && <Alert color="danger">User exists</Alert>}
+                  {this.participantExists && (
+                    <UncontrolledAlert color="danger">User exists</UncontrolledAlert>
+                  )}
                 </CardBody>
                 <CardFooter>
                   <Button onClick={this.handleClick} className="px-5" color="primary">
@@ -157,6 +170,7 @@ ExperimentCard.propTypes = {
   userID: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   createExperimentAsync: PropTypes.func.isRequired,
+  clearExperimentData: PropTypes.func.isRequired,
   participantExists: PropTypes.bool,
 };
 
@@ -170,6 +184,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       createExperimentAsync,
+      clearExperimentData,
     },
     dispatch,
   );
