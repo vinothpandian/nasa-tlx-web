@@ -13,9 +13,7 @@ const RawData = class extends React.Component {
     const { userID, match } = this.props;
     const { expID, partID } = match.params;
 
-    console.log(userID);
-
-    this.props.syncExpDataAsync({ userID, expID, partID });
+    this.props.syncExpDataAsync(userID, expID, partID);
   }
 
   render() {

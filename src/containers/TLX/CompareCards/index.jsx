@@ -7,9 +7,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import definitions from '../../../assets/definitions';
 import QuestionCard from './QuestionCard';
-import { storeDataAsync } from '../../../actions/experiments';
+import { storeCompareCards } from '../../../actions/experiments';
 import { storeStateAsync } from '../../../actions/state';
-import Loading from '../../../components/Loading';
 
 const CompareCards = class extends React.Component {
   constructor(props) {
@@ -20,8 +19,9 @@ const CompareCards = class extends React.Component {
       [],
     ));
 
-    const newState = JSON.parse(localStorage.getItem('compareCards')) || {
-      choices,
+    const defaultState = JSON.parse(localStorage.getItem('compareCards')) || {
+      choices: [..._.drop(choices), 'end'],
+      currentChoice: choices[0],
       workload: {
         'Mental Demand': 0,
         'Physical Demand': 0,
@@ -32,10 +32,8 @@ const CompareCards = class extends React.Component {
       },
     };
 
-    this.state = newState;
-    props.storeStateAsync('compareCards', newState);
-
-    this.listener = null;
+    this.state = defaultState;
+    props.storeStateAsync('compareCards', defaultState);
 
     this.handleClick = this.handleClick.bind(this);
   }
@@ -43,56 +41,32 @@ const CompareCards = class extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     this.props.storeStateAsync('compareCards', nextState);
 
-    return true;
-  }
+    const { experimentRef, expID, partID } = nextProps;
+    const { workload } = nextState;
 
-  componentDidUpdate() {
-    const { experimentRef, expID, partID } = this.props;
-    if (_.isEmpty(this.state.choices)) {
-      this.props.storeDataAsync({
-        experimentRef,
-        data: {
-          workload: this.state.workload,
-        },
-        path: `/end/${expID}/${partID}`,
-        completed: true,
-        experimentEnd: true,
-      });
+    const path = `/end/${expID}/${partID}`;
+
+    if (this.state.choices[0] === 'end') {
+      this.props.storeCompareCards(experimentRef, workload, true, path);
+      return false;
     }
+
+    this.props.storeCompareCards(experimentRef, workload);
+    return true;
   }
 
   handleClick(event) {
     const { id } = event.target;
-    const { experimentRef } = this.props;
-    const { workload } = this.state;
-
-    const newState = { ...workload, [id]: workload[id] + 1 };
-
-    this.setState({
-      workload: newState,
-    });
-
-    const payload = {
-      experimentRef,
-      data: {
-        workload: newState,
-      },
-      completed: false,
-    };
-
-    this.props.storeDataAsync(payload);
 
     this.setState(prevState => ({
       choices: _.drop(prevState.choices),
+      currentChoice: prevState.choices[0],
+      workload: { ...prevState.workload, [id]: prevState.workload[id] + 1 },
     }));
   }
 
   render() {
-    const { choices } = this.state;
-
-    if (_.isEmpty(choices)) return <Loading />;
-
-    const currentQuestion = choices[0];
+    const { choices, currentChoice } = this.state;
 
     return (
       <Container>
@@ -100,7 +74,7 @@ const CompareCards = class extends React.Component {
           <Col xs={8}>
             <QuestionCard
               qNo={choices.length}
-              options={currentQuestion}
+              options={currentChoice}
               handleClick={this.handleClick}
             />
           </Col>
@@ -113,7 +87,7 @@ const CompareCards = class extends React.Component {
 CompareCards.propTypes = {
   expID: PropTypes.string.isRequired,
   partID: PropTypes.string.isRequired,
-  storeDataAsync: PropTypes.func.isRequired,
+  storeCompareCards: PropTypes.func.isRequired,
   storeStateAsync: PropTypes.func.isRequired,
   experimentRef: PropTypes.shape().isRequired,
 };
@@ -127,7 +101,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      storeDataAsync,
+      storeCompareCards,
       storeStateAsync,
     },
     dispatch,

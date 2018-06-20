@@ -5,7 +5,7 @@ import { NavLink, withRouter } from 'react-router-dom';
 import Paragraph from '../../../components/Paragraph';
 
 const AboutTLX = (props) => {
-  const { expID, partID } = props.match.params;
+  const { pathname } = props.location;
 
   return (
     <Row>
@@ -33,7 +33,7 @@ const AboutTLX = (props) => {
             </Paragraph>
           </CardBody>
           <CardFooter className="text-right">
-            <Button color="primary" tag={NavLink} to={`/tlx/${expID}/${partID}/definitions`}>
+            <Button color="primary" tag={NavLink} to={pathname.replace('aboutTLX', 'definitions')}>
               Continue
             </Button>
           </CardFooter>
@@ -44,11 +44,8 @@ const AboutTLX = (props) => {
 };
 
 AboutTLX.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      expID: PropTypes.string.isRequired,
-      partID: PropTypes.string.isRequired,
-    }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
   }).isRequired,
 };
 

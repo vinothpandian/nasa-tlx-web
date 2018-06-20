@@ -5,7 +5,7 @@ import { NavLink, withRouter } from 'react-router-dom';
 import definitions from '../../../assets/definitions';
 
 const Definitions = (props) => {
-  const { expID, partID } = props.match.params;
+  const { pathname } = props.location;
 
   const data = Object.keys(definitions).map(key => (
     <React.Fragment key={key}>
@@ -23,7 +23,11 @@ const Definitions = (props) => {
             <dl className="row">{data}</dl>
           </CardBody>
           <CardFooter className="text-right">
-            <Button color="primary" tag={NavLink} to={`/tlx/${expID}/${partID}/ratingSheet`}>
+            <Button
+              color="primary"
+              tag={NavLink}
+              to={pathname.replace('definitions', 'ratingSheet')}
+            >
               Continue
             </Button>
           </CardFooter>
@@ -34,11 +38,8 @@ const Definitions = (props) => {
 };
 
 Definitions.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      expID: PropTypes.string.isRequired,
-      partID: PropTypes.string.isRequired,
-    }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
   }).isRequired,
 };
 

@@ -20,18 +20,20 @@ export const createExperiment = async (userID, expID, partID) => {
 
 export const syncExperiment = async (userID, expID, partID) => {
   const experimentRef = await database.ref(`${userID}/${expID}/${partID}`);
-
   const experimentData = await experimentRef.once('value');
 
-  const data = {};
+  const status = experimentData.exists();
 
-  experimentData.forEach((child) => {
-    data[child.key] = child.val();
-  });
+  if (status) {
+    return {
+      experimentRef,
+      data: experimentData.exportVal(),
+      status,
+    };
+  }
 
   return {
-    experimentRef,
-    data,
+    status,
   };
 };
 

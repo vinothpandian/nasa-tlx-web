@@ -7,6 +7,7 @@ import Home from './containers/Home';
 import TLX from './containers/TLX';
 import End from './containers/End';
 import RawData from './containers/RawData';
+import ErrorPage from './containers/ErrorPage';
 
 const Routes = () => (
   <ConnectedRouter history={history}>
@@ -16,6 +17,7 @@ const Routes = () => (
       <Route path="/end/:expID/:partID" component={End} />
       <Route path="/rawData/:expID/:partID" component={RawData} />
       <Route path="/dashboard" component={RawData} />
+      <Route path="/error" component={ErrorPage} />
     </Switch>
   </ConnectedRouter>
 );

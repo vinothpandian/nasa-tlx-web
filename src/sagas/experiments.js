@@ -2,16 +2,14 @@ import { put, takeEvery, call } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import {
   CREATE_EXPERIMENT_ASYNC,
-  CREATE_EXPERIMENT,
-  STORE_DATA_ASYNC,
-  STORE_DATA,
-  SYNC_EXP_DATA,
   SYNC_EXP_DATA_ASYNC,
   EXPERIMENT_COMPLETE,
-  PARTICIPANT_EXISTS,
+  PUSH_TO_STATE,
+  STORE_RATING_SHEET,
+  STORE_COMPARE_CARDS,
 } from '../actions/experiments';
 import { createExperiment, storeData, syncExperiment } from '../components/firebaseDatabase';
-import { store } from '../store/index';
+import { store } from '../store';
 
 function* createExperimentAsync(action) {
   const { userID, expID, partID } = action.payload;
@@ -20,19 +18,22 @@ function* createExperimentAsync(action) {
 
   if (!status) {
     yield put({
-      type: CREATE_EXPERIMENT,
+      type: PUSH_TO_STATE,
       payload: {
         expID,
         partID,
         experimentRef,
         completed: false,
-        participantExists: false,
+        participantExists: true,
       },
     });
     yield store.dispatch(push(`/tlx/${expID}/${partID}/aboutTLX`));
   } else {
     yield put({
-      type: PARTICIPANT_EXISTS,
+      type: PUSH_TO_STATE,
+      payload: {
+        participantExists: true,
+      },
     });
   }
 }
@@ -40,40 +41,70 @@ function* createExperimentAsync(action) {
 function* syncExpDataAsync(action) {
   const { userID, expID, partID } = action.payload;
 
-  const { experimentRef, data } = yield call(syncExperiment, userID, expID, partID);
-  yield put({
-    type: SYNC_EXP_DATA,
-    payload: {
-      expID,
-      partID,
-      experimentRef,
-      ...data,
-    },
-  });
-}
+  const { experimentRef, data, status } = yield call(syncExperiment, userID, expID, partID);
 
-function* storeDataAsync(action) {
-  const {
-    experimentRef, completed, data, experimentEnd,
-  } = action.payload;
-  yield call(storeData, experimentRef, data);
-  yield put({
-    type: STORE_DATA,
-    payload: data,
-  });
-
-  if (completed) yield store.dispatch(push(action.payload.path));
-
-  if (experimentEnd) {
-    yield call(storeData, experimentRef, { completed: true });
+  if (status) {
     yield put({
-      type: EXPERIMENT_COMPLETE,
+      type: PUSH_TO_STATE,
+      payload: {
+        expID,
+        partID,
+        experimentRef,
+        participantExists: true,
+        ...data,
+      },
+    });
+  } else {
+    yield put({
+      type: PUSH_TO_STATE,
+      payload: {
+        completed: true,
+        participantExists: false,
+      },
     });
   }
 }
 
+function* storeRatingSheetAsync(action) {
+  const {
+    experimentRef, data, status, path,
+  } = action.payload;
+
+  yield call(storeData, experimentRef, data);
+
+  yield put({
+    type: PUSH_TO_STATE,
+    payload: data,
+  });
+
+  if (status) yield store.dispatch(push(path));
+}
+
+function* storeCompareCards(action) {
+  const {
+    experimentRef, data, status, path,
+  } = action.payload;
+
+  yield call(storeData, experimentRef, data);
+
+  yield put({
+    type: PUSH_TO_STATE,
+    payload: data,
+  });
+
+  if (status) {
+    yield put({
+      type: EXPERIMENT_COMPLETE,
+    });
+
+    yield store.dispatch(push(path));
+  }
+}
+
+
 export default function* watchExperimentActions() {
   yield takeEvery(CREATE_EXPERIMENT_ASYNC, createExperimentAsync);
   yield takeEvery(SYNC_EXP_DATA_ASYNC, syncExpDataAsync);
-  yield takeEvery(STORE_DATA_ASYNC, storeDataAsync);
+  yield takeEvery(STORE_RATING_SHEET, storeRatingSheetAsync);
+  yield takeEvery(STORE_COMPARE_CARDS, storeCompareCards);
 }

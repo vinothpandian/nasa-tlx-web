@@ -27,8 +27,21 @@ const TLX = class extends React.Component {
     }
 
     if (expID === '' || partID === '') {
-      this.props.syncExpDataAsync({ userID, ...this.props.match.params });
+      const { params } = this.props.match;
+
+      this.props.syncExpDataAsync(userID, params.expID, params.partID);
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const { completed, participantExists } = nextProps;
+
+    if (completed || !participantExists) {
+      store.dispatch(push('/error'));
+      return false;
+    }
+
+    return true;
   }
 
   render() {
@@ -56,6 +69,7 @@ TLX.defaultProps = {
   expID: '',
   partID: '',
   completed: false,
+  participantExists: true,
 };
 
 TLX.propTypes = {
@@ -63,6 +77,7 @@ TLX.propTypes = {
   partID: PropTypes.string,
   userID: PropTypes.string.isRequired,
   completed: PropTypes.bool,
+  participantExists: PropTypes.bool,
   syncExpDataAsync: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({

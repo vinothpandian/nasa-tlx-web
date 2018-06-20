@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Slider from './Slider';
-import { storeDataAsync } from '../../../actions/experiments';
+import { storeRatingSheet } from '../../../actions/experiments';
 import { shortDefinitions } from '../../../assets/definitions';
 import { storeStateAsync } from '../../../actions/state';
 
@@ -14,7 +14,7 @@ const RatingSheet = class extends React.Component {
   constructor(props) {
     super(props);
 
-    const newState = JSON.parse(localStorage.getItem('ratingSheet')) || {
+    const defaultState = JSON.parse(localStorage.getItem('ratingSheet')) || {
       scale: {
         'Mental Demand': 50,
         'Physical Demand': 50,
@@ -23,8 +23,8 @@ const RatingSheet = class extends React.Component {
       choose: [0, 3],
     };
 
-    this.state = newState;
-    props.storeStateAsync('ratingSheet', newState);
+    this.state = defaultState;
+    props.storeStateAsync('ratingSheet', defaultState);
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -36,9 +36,7 @@ const RatingSheet = class extends React.Component {
     return true;
   }
 
-  handleChange(key, sliderValue) {
-    const value = key === 'Performance' ? 100 - sliderValue : sliderValue;
-
+  handleChange(key, value) {
     this.setState(prevState => ({
       scale: {
         ...prevState.scale,
@@ -51,14 +49,6 @@ const RatingSheet = class extends React.Component {
     const { experimentRef, location } = this.props;
     const { choose, scale } = this.state;
 
-    const payload = {
-      experimentRef,
-      data: {
-        scale,
-      },
-      completed: false,
-    };
-
     if (_.isEqual(choose, [0, 3])) {
       this.setState(prevState => ({
         scale: {
@@ -70,12 +60,14 @@ const RatingSheet = class extends React.Component {
         choose: [3, 6],
       }));
 
-      this.props.storeDataAsync(payload);
+      this.props.storeRatingSheet(experimentRef, scale);
       return;
     }
 
+    scale.Performance = 100 - scale.Performance;
+
     const path = location.pathname.replace('ratingSheet', 'compareCards');
-    this.props.storeDataAsync({ ...payload, path, completed: true });
+    this.props.storeRatingSheet(experimentRef, scale, true, path);
   }
 
   render() {
@@ -105,7 +97,7 @@ const RatingSheet = class extends React.Component {
             <CardHeader tag="h4">Rating Sheet</CardHeader>
             <CardBody>{sliders}</CardBody>
             <CardFooter className="text-right">
-              <Button onClick={this.handleClick} color="success">
+              <Button onClick={this.handleClick} color="primary">
                 Continue
               </Button>
             </CardFooter>
@@ -117,7 +109,7 @@ const RatingSheet = class extends React.Component {
 };
 
 RatingSheet.propTypes = {
-  storeDataAsync: PropTypes.func.isRequired,
+  storeRatingSheet: PropTypes.func.isRequired,
   storeStateAsync: PropTypes.func.isRequired,
   experimentRef: PropTypes.shape().isRequired,
   location: PropTypes.shape({
@@ -132,7 +124,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      storeDataAsync,
+      storeRatingSheet,
       storeStateAsync,
     },
     dispatch,

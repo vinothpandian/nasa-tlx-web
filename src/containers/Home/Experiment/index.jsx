@@ -15,7 +15,7 @@ import {
   Button,
   Alert,
 } from 'reactstrap';
-import { createExperimentAsync } from '../../../actions/experiments';
+import { createExperimentAsync, participantExists } from '../../../actions/experiments';
 import { FluidContainer, FullHeightRow } from '../../../components';
 import Menubar from '../../../components/Menubar';
 import UserNav from '../../../components/UserNav';
@@ -24,13 +24,6 @@ import InputWithFeedback from '../../../components/InputWithFeedback';
 const logo = require('../../../assets/NasaLogo.png');
 
 class ExperimentCard extends Component {
-  static propTypes = {
-    userID: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    createExperimentAsync: PropTypes.func.isRequired,
-    participantExists: PropTypes.bool.isRequired,
-  };
-
   constructor(props) {
     super(props);
 
@@ -52,22 +45,23 @@ class ExperimentCard extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.setObjectState = this.setObjectState.bind(this);
+    this.setRandomPartID = this.setRandomPartID.bind(this);
   }
 
-  setObjectState = (obj, key, value) => {
+  setObjectState(obj, key, value) {
     this.setState(prevState => ({
       [obj]: {
         ...prevState[obj],
         [key]: value,
       },
     }));
-  };
+  }
 
-  setRandomPartID = () => {
+  setRandomPartID() {
     this.setObjectState('partID', 'value', shortID());
-  };
+  }
 
-  handleClick = () => {
+  handleClick() {
     const { expID, partID } = this.state;
     const { userID } = this.props;
 
@@ -86,7 +80,7 @@ class ExperimentCard extends Component {
     if (error) return;
 
     this.props.createExperimentAsync(userID, expID.value, partID.value);
-  };
+  }
 
   handleChange = prop => (event) => {
     const { value } = event.target;
@@ -154,6 +148,17 @@ class ExperimentCard extends Component {
     );
   }
 }
+
+ExperimentCard.defaultProps = {
+  participantExists: false,
+};
+
+ExperimentCard.propTypes = {
+  userID: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  createExperimentAsync: PropTypes.func.isRequired,
+  participantExists: PropTypes.bool,
+};
 
 const mapStateToProps = state => ({
   userID: state.user.get('userID'),
