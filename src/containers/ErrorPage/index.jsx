@@ -22,8 +22,8 @@ const ErrorPage = class extends React.Component {
             <Col>
               <Card>
                 <CardBody className="text-center">
-                  <h1 className="display-4 pt-4">Link does not exist</h1>
-                  <p className="lead p-3">Please check the url</p>
+                  <h1 className="display-4 pt-4">{this.props.message}</h1>
+                  <p className="lead p-3"> {this.props.notification} </p>
                 </CardBody>
                 <CardFooter className="text-right">
                   <Button color="primary" tag={NavLink} to="/">
@@ -39,8 +39,15 @@ const ErrorPage = class extends React.Component {
   }
 };
 
+ErrorPage.defaultProps = {
+  message: 'Link does not exist',
+  notification: 'Please check the url',
+};
+
 ErrorPage.propTypes = {
   clearExperimentData: PropTypes.func.isRequired,
+  message: PropTypes.string,
+  notification: PropTypes.string,
 };
 
 const mapDispatchToProps = dispatch =>

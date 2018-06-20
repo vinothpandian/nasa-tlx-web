@@ -11,6 +11,7 @@ import { syncExpDataAsync } from '../../actions/experiments';
 import DataDisplay from './DataDisplay';
 import Loading from '../../components/Loading';
 import { store } from '../../store/index';
+import ErrorPage from '../ErrorPage/index';
 
 const RawData = class extends React.Component {
   componentDidMount() {
@@ -21,7 +22,7 @@ const RawData = class extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (!nextProps.experiment.completed || !nextProps.participantExists) {
+    if (!nextProps.participantExists) {
       store.dispatch(push('/'));
       return false;
     }
@@ -34,7 +35,9 @@ const RawData = class extends React.Component {
       expID, partID, date, ...data
     } = this.props.experiment;
 
-    if (expID === '' || partID === '' || !data.completed) return <Loading fullScreen />;
+    if (expID === '' || partID === '') return <Loading fullScreen />;
+
+    if (!data.completed) return <ErrorPage message="Incomplete data" notification="User has not filled the entire questionnaire" />;
 
     return (
       <FluidContainer fluid>
