@@ -27,7 +27,8 @@ class ExperimentCard extends Component {
   constructor(props) {
     super(props);
 
-    localStorage.clear();
+    localStorage.removeItem('ratingSheet');
+    localStorage.removeItem('compareCards');
     props.clearExperimentData();
 
     this.participantExists = false;

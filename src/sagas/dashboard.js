@@ -21,6 +21,7 @@ function* fetchAllExperimentsAsync(action) {
     });
   } else {
     yield put({
+      type: PUSH_TO_DASHBOARD,
       experimentCount: 0,
     });
   }
@@ -41,6 +42,7 @@ function* fetchAllParticipantsAsync(action) {
     });
   } else {
     yield put({
+      type: PUSH_TO_DASHBOARD,
       participantCount: 0,
     });
   }

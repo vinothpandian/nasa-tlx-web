@@ -61,7 +61,8 @@ export default handleActions(
 
       storeData(state.get('experimentRef'), calculatedData);
 
-      localStorage.clear();
+      localStorage.removeItem('ratingSheet');
+      localStorage.removeItem('compareCards');
 
       return state.merge(calculatedData);
     },

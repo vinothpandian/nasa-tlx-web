@@ -26,6 +26,7 @@ import DashboardTable from './DashboardTable';
 const Dashboard = class extends React.Component {
   constructor(props) {
     super(props);
+
     props.fetchAllExperimentsAsync(props.userID);
 
     this.state = {

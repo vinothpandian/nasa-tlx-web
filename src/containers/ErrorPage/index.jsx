@@ -10,7 +10,7 @@ import { clearExperimentData } from '../../actions/experiments';
 
 const ErrorPage = class extends React.Component {
   componentDidMount() {
-    this.props.clearExperimentData();
+    if (this.props.clearExperiment) this.props.clearExperimentData();
   }
 
   render() {
@@ -42,12 +42,14 @@ const ErrorPage = class extends React.Component {
 ErrorPage.defaultProps = {
   message: 'Link does not exist',
   notification: 'Please check the url',
+  clearExperiment: true,
 };
 
 ErrorPage.propTypes = {
   clearExperimentData: PropTypes.func.isRequired,
   message: PropTypes.string,
   notification: PropTypes.string,
+  clearExperiment: PropTypes.bool,
 };
 
 const mapDispatchToProps = dispatch =>

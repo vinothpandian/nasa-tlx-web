@@ -4,6 +4,7 @@ import { Container, Row, Col, Card, CardHeader } from 'reactstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
+import _ from 'lodash';
 import { FluidContainer } from '../../components';
 import Menubar from '../../components/Menubar';
 import UserNav from '../../components/UserNav';
@@ -35,9 +36,17 @@ const RawData = class extends React.Component {
       expID, partID, date, ...data
     } = this.props.experiment;
 
-    if (expID === '' || partID === '') return <Loading fullScreen />;
+    if (expID === '' || partID === '' || _.isEmpty(data)) return <Loading fullScreen />;
 
-    if (!data.completed) return <ErrorPage message="Incomplete data" notification="User has not filled the entire questionnaire" />;
+    if (!_.isEmpty(data) && !data.completed) {
+      return (
+        <ErrorPage
+          message="Incomplete data"
+          notification="User has not filled the entire questionnaire"
+          clearExperiment={false}
+        />
+      );
+    }
 
     return (
       <FluidContainer fluid>
