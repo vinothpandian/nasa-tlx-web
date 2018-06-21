@@ -16,10 +16,10 @@ import ErrorPage from '../ErrorPage/index';
 
 const RawData = class extends React.Component {
   componentDidMount() {
-    const { userID, match } = this.props;
+    const { match } = this.props;
     const { expID, partID } = match.params;
 
-    this.props.syncExpDataAsync(userID, expID, partID);
+    this.props.syncExpDataAsync(expID, partID);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -79,7 +79,6 @@ RawData.propTypes = {
   syncExpDataAsync: PropTypes.func.isRequired,
   participantExists: PropTypes.bool,
   experiment: PropTypes.shape().isRequired,
-  userID: PropTypes.string.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       expID: PropTypes.string.isRequired,
@@ -89,7 +88,6 @@ RawData.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  userID: state.user.get('userID'),
   experiment: state.experiment.toJS(),
   participantExists: state.experiment.get('participantExists'),
 });

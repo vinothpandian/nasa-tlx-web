@@ -14,13 +14,14 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import ErrorPage from '../ErrorPage/index';
 
 const processParticipantData = (participantList, expID) => {
   let sum = 0;
   let count = 0;
   const chartData = [];
 
-  const tableData = participantList.filter(item => item.get('completed')).map((details, index) => {
+  const tableData = participantList.map((details, index) => {
     const { partID, date, weightedRating } = details.toJS();
 
     sum += weightedRating;
@@ -54,6 +55,16 @@ const processParticipantData = (participantList, expID) => {
 
 const DashboardTable = (props) => {
   const { expID, participantList } = props;
+
+  if (participantList.size === 0) {
+    return (
+      <Row>
+        <Col xs={12}>
+          <h3>No complete experiment data found</h3>
+        </Col>
+      </Row>
+    );
+  }
 
   const { tableData, average, chartData } = processParticipantData(participantList, expID);
 

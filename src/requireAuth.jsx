@@ -1,36 +1,41 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import PropTypes from 'prop-types';
 import { store } from './store';
 import Loading from './components/Loading';
+import { auth } from './components/firebase';
 
 const requireAuth = (ComposedComponent) => {
   class Auth extends Component {
-    componentWillMount() {
-      if (!this.props.loginStatus) store.dispatch(push('/'));
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        isSignedIn: false,
+      };
     }
 
-    componentWillUpdate(nextProps) {
-      if (!nextProps.loginStatus) store.dispatch(push('/'));
+    componentDidMount() {
+      this.unregisterAuthObserver = auth.onAuthStateChanged((user) => {
+        this.setState({ isSignedIn: !!user });
+
+        if (!user) {
+          store.dispatch(push('/'));
+        }
+      });
+    }
+
+    componentWillUnmount() {
+      this.unregisterAuthObserver();
     }
 
     render() {
-      if (this.props.loginStatus) return <ComposedComponent {...this.props} />;
+      if (this.state.isSignedIn) return <ComposedComponent {...this.props} />;
 
       return <Loading fullScreen />;
     }
   }
 
-  Auth.propTypes = {
-    loginStatus: PropTypes.bool.isRequired,
-  };
-
-  const mapStateToProps = state => ({
-    loginStatus: state.user.get('loginStatus'),
-  });
-
-  return connect(mapStateToProps)(Auth);
+  return Auth;
 };
 
 export default requireAuth;

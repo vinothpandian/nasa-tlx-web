@@ -1,39 +1,42 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { Nav, NavItem, Button } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { userLogoutAsync } from '../actions/user';
+import { push } from 'react-router-redux';
+import { signOut } from './firebase';
+import { store } from '../store';
 
-const UserNav = props => (
-  <Nav className="ml-auto" navbar>
-    <NavItem>
-      <NavLink className="nav-link" to="/dashboard">
-        Dashboard
-      </NavLink>
-    </NavItem>
-    <NavItem>
-      <Button onClick={props.userLogoutAsync} color="link" className="nav-link">
-        Logout
-      </Button>
-    </NavItem>
-  </Nav>
-);
+const UserNav = class extends React.Component {
+  constructor(props) {
+    super(props);
 
-UserNav.propTypes = {
-  userLogoutAsync: PropTypes.func.isRequired,
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  // eslint-disable-next-line
+  async handleClick(event) {
+    const status = await signOut();
+
+    if (status === 'signOff') {
+      store.dispatch(push('/'));
+    }
+  }
+
+  render() {
+    return (
+      <Nav className="ml-auto" navbar>
+        <NavItem>
+          <NavLink className="nav-link" to="/dashboard">
+            Dashboard
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <Button onClick={this.handleClick} color="link" className="nav-link">
+            Logout
+          </Button>
+        </NavItem>
+      </Nav>
+    );
+  }
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      userLogoutAsync,
-    },
-    dispatch,
-  );
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(UserNav);
+export default UserNav;

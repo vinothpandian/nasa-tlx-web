@@ -8,13 +8,13 @@ import {
   STORE_RATING_SHEET,
   STORE_COMPARE_CARDS,
 } from '../actions/experiments';
-import { createExperiment, storeData, syncExperiment } from '../components/firebaseDatabase';
+import { createExperiment, storeData, syncExperiment } from '../components/firebase';
 import { store } from '../store';
 
 function* createExperimentAsync(action) {
-  const { userID, expID, partID } = action.payload;
+  const { expID, partID } = action.payload;
 
-  const { experimentRef, status } = yield call(createExperiment, userID, expID, partID);
+  const { experimentRef, status } = yield call(createExperiment, expID, partID);
 
   if (!status) {
     yield put({
@@ -39,9 +39,9 @@ function* createExperimentAsync(action) {
 }
 
 function* syncExpDataAsync(action) {
-  const { userID, expID, partID } = action.payload;
+  const { expID, partID } = action.payload;
 
-  const { experimentRef, data, status } = yield call(syncExperiment, userID, expID, partID);
+  const { experimentRef, data, status } = yield call(syncExperiment, expID, partID);
 
   if (status) {
     yield put({

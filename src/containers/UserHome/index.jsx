@@ -8,7 +8,6 @@ import {
   Form,
   Container,
   Card,
-  CardHeader,
   CardBody,
   CardText,
   CardFooter,
@@ -73,7 +72,6 @@ class UserHome extends Component {
 
   handleClick() {
     const { expID, partID } = this.state;
-    const { userID } = this.props;
 
     let error = false;
 
@@ -89,7 +87,7 @@ class UserHome extends Component {
 
     if (error) return;
 
-    this.props.createExperimentAsync(userID, expID.value, partID.value);
+    this.props.createExperimentAsync(expID.value, partID.value);
   }
 
   handleChange = prop => (event) => {
@@ -101,7 +99,6 @@ class UserHome extends Component {
 
   render() {
     const { expID, partID } = this.state;
-    const { username } = this.props;
 
     return (
       <FluidContainer fluid>
@@ -118,7 +115,8 @@ class UserHome extends Component {
               className="text-left my-4 my-md-0"
             >
               <Card>
-                <CardHeader tag="h4">Hello {username} </CardHeader>
+                {/* TODO: Get username */}
+                {/* <CardHeader tag="h4">Hello {username} </CardHeader> */}
                 <CardBody>
                   <CardText>Fill the details below to get started</CardText>
                   <Form>
@@ -166,16 +164,12 @@ UserHome.defaultProps = {
 };
 
 UserHome.propTypes = {
-  userID: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
   createExperimentAsync: PropTypes.func.isRequired,
   clearExperimentData: PropTypes.func.isRequired,
   participantExists: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
-  userID: state.user.get('userID'),
-  username: state.user.get('username'),
   participantExists: state.experiment.get('participantExists'),
 });
 

@@ -2,7 +2,7 @@ import { handleActions } from 'redux-actions';
 import { Map, fromJS } from 'immutable';
 import moment from 'moment';
 import { EXPERIMENT_COMPLETE, PUSH_TO_STATE, CLEAR_EXPERIMENT_DATA } from '../actions/experiments';
-import { storeData } from '../components/firebaseDatabase';
+import { storeData } from '../components/firebase';
 
 /*
 {

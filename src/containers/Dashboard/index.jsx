@@ -28,7 +28,7 @@ const Dashboard = class extends React.Component {
   constructor(props) {
     super(props);
 
-    props.fetchAllExperimentsAsync(props.userID);
+    props.fetchAllExperimentsAsync();
 
     this.state = {
       dropdownOpen: false,
@@ -47,19 +47,16 @@ const Dashboard = class extends React.Component {
 
   handleClick(event) {
     const expID = event.target.id;
-    const { userID } = this.props;
 
     this.setState({
       expID,
     });
 
-    this.props.fetchAllParticipantsAsync(userID, expID);
+    this.props.fetchAllParticipantsAsync(expID);
   }
 
   render() {
-    const {
-      experimentList, experimentCount, participantList, participantCount,
-    } = this.props;
+    const { experimentList, experimentCount, participantList } = this.props;
 
     const { expID } = this.state;
 
@@ -118,25 +115,20 @@ const Dashboard = class extends React.Component {
 Dashboard.defaultProps = {
   experimentCount: -1,
   experimentList: new List(),
-  participantCount: 0,
   participantList: new List(),
 };
 
 Dashboard.propTypes = {
-  userID: PropTypes.string.isRequired,
   fetchAllExperimentsAsync: PropTypes.func.isRequired,
   fetchAllParticipantsAsync: PropTypes.func.isRequired,
   experimentCount: PropTypes.number,
   experimentList: PropTypes.instanceOf(List),
-  participantCount: PropTypes.number,
   participantList: PropTypes.instanceOf(List),
 };
 
 const mapStateToProps = state => ({
-  userID: state.user.get('userID'),
   experimentCount: state.dashboard.get('experimentCount'),
   experimentList: state.dashboard.get('experimentList'),
-  participantCount: state.dashboard.get('participantCount'),
   participantList: state.dashboard.get('participantList'),
 });
 

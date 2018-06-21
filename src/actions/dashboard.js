@@ -6,10 +6,4 @@ export const FETCH_ALL_EXPERIMENTS_ASYNC = 'FETCH_ALL_EXPERIMENTS_ASYNC';
 export const FETCH_ALL_PARTICIPANTS_ASYNC = 'FETCH_ALL_PARTICIPANTS_ASYNC';
 
 export const fetchAllExperimentsAsync = createAction(FETCH_ALL_EXPERIMENTS_ASYNC);
-export const fetchAllParticipantsAsync = createAction(
-  FETCH_ALL_PARTICIPANTS_ASYNC,
-  (userID, expID) => ({
-    userID,
-    expID,
-  }),
-);
+export const fetchAllParticipantsAsync = createAction(FETCH_ALL_PARTICIPANTS_ASYNC);

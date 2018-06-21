@@ -19,7 +19,7 @@ import Loading from '../../components/Loading';
 const TLX = class extends React.Component {
   componentDidMount() {
     const {
-      expID, partID, userID, completed,
+      expID, partID, completed,
     } = this.props;
 
     if (completed) {
@@ -29,7 +29,7 @@ const TLX = class extends React.Component {
     if (expID === '' || partID === '') {
       const { params } = this.props.match;
 
-      this.props.syncExpDataAsync(userID, params.expID, params.partID);
+      this.props.syncExpDataAsync(params.expID, params.partID);
     }
   }
 
@@ -75,7 +75,6 @@ TLX.defaultProps = {
 TLX.propTypes = {
   expID: PropTypes.string,
   partID: PropTypes.string,
-  userID: PropTypes.string.isRequired,
   completed: PropTypes.bool,
   participantExists: PropTypes.bool,
   syncExpDataAsync: PropTypes.func.isRequired,
@@ -90,7 +89,6 @@ TLX.propTypes = {
 const mapStateToProps = state => ({
   expID: state.experiment.get('expID'),
   partID: state.experiment.get('partID'),
-  userID: state.user.get('userID'),
   completed: state.experiment.get('completed'),
 });
 

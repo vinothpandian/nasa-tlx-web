@@ -4,12 +4,10 @@ import {
   FETCH_ALL_PARTICIPANTS_ASYNC,
   PUSH_TO_DASHBOARD,
 } from '../actions/dashboard';
-import { fetchData, fetchParticipantData } from '../components/firebaseDatabase';
+import { fetchExperimentData, fetchParticipantData } from '../components/firebase';
 
-function* fetchAllExperimentsAsync(action) {
-  const userID = action.payload;
-
-  const { data, status } = yield call(fetchData, userID);
+function* fetchAllExperimentsAsync() {
+  const { data, status } = yield call(fetchExperimentData);
 
   if (status) {
     yield put({
@@ -28,9 +26,9 @@ function* fetchAllExperimentsAsync(action) {
 }
 
 function* fetchAllParticipantsAsync(action) {
-  const { userID, expID } = yield action.payload;
+  const expID = action.payload;
 
-  const { data, status } = yield call(fetchParticipantData, userID, expID);
+  const { data, status } = yield call(fetchParticipantData, expID);
 
   if (status) {
     yield put({
