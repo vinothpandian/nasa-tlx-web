@@ -11,33 +11,46 @@ import {
   Button,
 } from 'reactstrap';
 
-const InputWithFeedback = props => (
-  <FormGroup>
-    <Label for={props.name}>{props.label}</Label>
-    <InputGroup>
-      <Input
-        id={props.name}
-        name={props.name}
-        onChange={props.handleChange}
-        value={props.value}
-        invalid={props.error}
-      />
-      {props.addon && (
-        <InputGroupAddon addonType="append">
-          <Button onClick={props.buttonAction} color={props.buttonColor}>
-            {props.buttonLabel}
-          </Button>
-        </InputGroupAddon>
-      )}
-      <FormFeedback invalid={props.error.toString()}>{props.errorText}</FormFeedback>
-    </InputGroup>
-    <FormText>{props.helperText}</FormText>
-  </FormGroup>
-);
+const InputWithFeedback = class extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.props.handleChange(event.target.value);
+  }
+
+  render() {
+    const { props } = this;
+
+    return (
+      <FormGroup>
+        <Label for={props.name}>{props.label}</Label>
+        <InputGroup>
+          <Input
+            id={props.name}
+            name={props.name}
+            onChange={this.handleChange}
+            value={props.value}
+            invalid={props.error}
+          />
+          <InputGroupAddon addonType="append">
+            <Button onClick={props.buttonAction} color={props.buttonColor}>
+              {props.buttonLabel}
+            </Button>
+          </InputGroupAddon>
+          <FormFeedback invalid={props.error.toString()}>{props.errorText}</FormFeedback>
+        </InputGroup>
+        <FormText>{props.helperText}</FormText>
+      </FormGroup>
+    );
+  }
+};
 
 InputWithFeedback.defaultProps = {
   helperText: '',
-  addon: false,
   buttonLabel: 'primary',
   buttonColor: '',
   buttonAction: () => {},
@@ -51,7 +64,6 @@ InputWithFeedback.propTypes = {
   errorText: PropTypes.string.isRequired,
   helperText: PropTypes.string,
   handleChange: PropTypes.func.isRequired,
-  addon: PropTypes.bool,
   buttonLabel: PropTypes.string,
   buttonColor: PropTypes.string,
   buttonAction: PropTypes.func,
