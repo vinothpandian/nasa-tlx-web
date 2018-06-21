@@ -20,7 +20,7 @@ const processParticipantData = (participantList, expID) => {
   let count = 0;
   const chartData = [];
 
-  const tableData = participantList.filter(item => item.get('completed')).map((details, index) => {
+  const tableData = participantList.map((details, index) => {
     const { partID, date, weightedRating } = details.toJS();
 
     sum += weightedRating;
@@ -55,6 +55,16 @@ const processParticipantData = (participantList, expID) => {
 const DashboardTable = (props) => {
   const { expID, participantList } = props;
 
+  if (participantList.size === 0) {
+    return (
+      <Row>
+        <Col xs={12}>
+          <h3>No complete experiment data found</h3>
+        </Col>
+      </Row>
+    );
+  }
+
   const { tableData, average, chartData } = processParticipantData(participantList, expID);
 
   return (
@@ -86,7 +96,7 @@ const DashboardTable = (props) => {
         </Table>
         <hr />
       </Col>
-      <h1 className="mt-3">Taskload chart of participants</h1>
+      <h1 className="mt-3">Weighted rating chart of participants</h1>
       <Row className="justify-content-center align-items-center w-100 mt-5 h-100">
         <Col xs={12}>
           <ResponsiveContainer width="100%" height={450}>

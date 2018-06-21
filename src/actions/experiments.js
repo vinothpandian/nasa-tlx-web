@@ -7,18 +7,13 @@ export const CLEAR_EXPERIMENT_DATA = 'CLEAR_EXPERIMENT_DATA';
 export const clearExperimentData = createAction(CLEAR_EXPERIMENT_DATA);
 
 export const CREATE_EXPERIMENT_ASYNC = 'CREATE_EXPERIMENT_ASYNC';
-export const createExperimentAsync = createAction(
-  CREATE_EXPERIMENT_ASYNC,
-  (userID, expID, partID) => ({
-    userID,
-    expID,
-    partID,
-  }),
-);
+export const createExperimentAsync = createAction(CREATE_EXPERIMENT_ASYNC, (expID, partID) => ({
+  expID,
+  partID,
+}));
 
 export const SYNC_EXP_DATA_ASYNC = 'SYNC_EXP_DATA_ASYNC';
-export const syncExpDataAsync = createAction(SYNC_EXP_DATA_ASYNC, (userID, expID, partID) => ({
-  userID,
+export const syncExpDataAsync = createAction(SYNC_EXP_DATA_ASYNC, (expID, partID) => ({
   expID,
   partID,
 }));
