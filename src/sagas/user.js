@@ -5,13 +5,18 @@ import { signOut } from '../components/firebaseAuth';
 import { store } from '../store/index';
 
 function* userLogoutAsync() {
-  yield store.dispatch(push('/'));
+  const status = yield call(signOut);
 
-  yield call(signOut);
+  if (status === 'signOff') {
+    yield put({
+      type: USER_LOGOUT,
+      payload: {
+        loginStatus: false,
+      },
+    });
 
-  yield put({
-    type: USER_LOGOUT,
-  });
+    yield store.dispatch(push('/'));
+  }
 }
 
 export default function* watchUserActions() {

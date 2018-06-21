@@ -27,11 +27,11 @@ const Menubar = class extends React.Component {
   }
 
   render() {
-    const { nav, navBar } = this.props;
+    const { nav, navBar, homeLink } = this.props;
 
     return (
       <Navbar color="dark" dark expand="md">
-        <NavbarBrand href="/">
+        <NavbarBrand href={homeLink}>
           <Image src={logo} alt="Logo" width="36" />
           Nasa TLX
         </NavbarBrand>
@@ -51,11 +51,13 @@ const Menubar = class extends React.Component {
 Menubar.defaultProps = {
   nav: <Nav />,
   navBar: false,
+  homeLink: '/tlx',
 };
 
 Menubar.propTypes = {
   nav: PropTypes.element,
   navBar: PropTypes.bool,
+  homeLink: PropTypes.string,
 };
 
 export default Menubar;

@@ -1,6 +1,6 @@
 import React from 'react';
-import Paragraph from '../../../components/Paragraph';
-import { JustifiedParagraph } from '../../../components';
+import Paragraph from '../../components/Paragraph';
+import { JustifiedParagraph } from '../../components';
 
 const About = () => (
   <div>

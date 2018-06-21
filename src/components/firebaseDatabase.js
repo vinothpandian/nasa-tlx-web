@@ -7,7 +7,7 @@ firebase.initializeApp(firebaseConfig);
 export const database = firebase.database();
 
 export const createExperiment = async (...params) => {
-  const experimentRef = await database.ref(`${params.join('/')}`);
+  const experimentRef = await database.ref(`/users/${params.join('/')}`);
   const data = await experimentRef.once('value');
   const status = data.exists();
 
@@ -19,7 +19,7 @@ export const createExperiment = async (...params) => {
 };
 
 export const syncExperiment = async (...params) => {
-  const experimentRef = await database.ref(`${params.join('/')}`);
+  const experimentRef = await database.ref(`/users/${params.join('/')}`);
   const experimentData = await experimentRef.once('value');
 
   const status = experimentData.exists();
@@ -42,7 +42,7 @@ export const storeData = async (experimentRef, data) => {
 };
 
 export const fetchData = async (...params) => {
-  const experimentRef = await database.ref(`${params.join('/')}`);
+  const experimentRef = await database.ref(`/users/${params.join('/')}`);
   const experimentData = await experimentRef.once('value');
 
   const status = experimentData.exists();
@@ -60,7 +60,7 @@ export const fetchData = async (...params) => {
 };
 
 export const fetchParticipantData = async (...params) => {
-  const participantRef = await database.ref(`${params.join('/')}`);
+  const participantRef = await database.ref(`/users/${params.join('/')}`);
   const participantData = await participantRef.once('value');
 
   const status = participantData.exists();
@@ -77,6 +77,7 @@ export const fetchParticipantData = async (...params) => {
     partID: key,
     date: value.date,
     weightedRating: value.weightedRating,
+    completed: value.completed,
   }));
 
   return {
