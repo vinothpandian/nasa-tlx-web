@@ -8,17 +8,22 @@ import {
   Form,
   Container,
   Card,
+  CardHeader,
   CardBody,
   CardText,
   CardFooter,
   Button,
   UncontrolledAlert,
 } from 'reactstrap';
+import { List } from 'immutable';
 import { createExperimentAsync, clearExperimentData } from '../../actions/experiments';
 import { FluidContainer, FullHeightRow } from '../../components';
 import Menubar from '../../components/Menubar';
 import UserNav from '../../components/UserNav';
 import InputWithFeedback from '../../components/InputWithFeedback';
+import { getUserInfo } from '../../components/firebase';
+import { fetchAllExperimentsAsync } from '../../actions/dashboard';
+import InputWithAutocomplete from '../../components/InputWithAutocomplete';
 
 const logo = require('../../assets/NasaLogo.png');
 
@@ -32,14 +37,17 @@ class UserHome extends Component {
 
     this.participantExists = false;
 
+    this.getUserName();
+
     this.state = {
+      username: '',
       expID: {
-        value: 'Test',
+        value: '',
         error: false,
         errorText: 'Please enter an experiment ID',
       },
       partID: {
-        value: 'P1',
+        value: '',
         error: false,
         errorText: 'Please enter an participant ID',
       },
@@ -49,6 +57,7 @@ class UserHome extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.setObjectState = this.setObjectState.bind(this);
     this.setRandomPartID = this.setRandomPartID.bind(this);
+    this.getUserName = this.getUserName.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -68,6 +77,14 @@ class UserHome extends Component {
 
   setRandomPartID() {
     this.setObjectState('partID', 'value', shortID());
+    this.setObjectState('partID', 'error', false);
+  }
+
+  getUserName() {
+    getUserInfo().then(user =>
+      this.setState({
+        username: user.username,
+      }));
   }
 
   handleClick() {
@@ -90,15 +107,13 @@ class UserHome extends Component {
     this.props.createExperimentAsync(expID.value, partID.value);
   }
 
-  handleChange = prop => (event) => {
-    const { value } = event.target;
-
+  handleChange = prop => (value) => {
     this.setObjectState(prop, 'value', value);
     this.setObjectState(prop, 'error', false);
   };
 
   render() {
-    const { expID, partID } = this.state;
+    const { expID, partID, username } = this.state;
 
     return (
       <FluidContainer fluid>
@@ -115,12 +130,13 @@ class UserHome extends Component {
               className="text-left my-4 my-md-0"
             >
               <Card>
-                {/* TODO: Get username */}
-                {/* <CardHeader tag="h4">Hello {username} </CardHeader> */}
+                <CardHeader tag="h4">Hello {username} </CardHeader>
                 <CardBody>
                   <CardText>Fill the details below to get started</CardText>
                   <Form>
-                    <InputWithFeedback
+                    <InputWithAutocomplete
+                      fetchItems={this.props.fetchAllExperimentsAsync}
+                      items={this.props.experimentList}
                       name="expID"
                       label="Experiment ID"
                       value={expID.value}
@@ -136,7 +152,6 @@ class UserHome extends Component {
                       errorText={partID.errorText}
                       buttonLabel="Random"
                       buttonColor="secondary"
-                      addon
                       buttonAction={this.setRandomPartID}
                       handleChange={this.handleChange('partID')}
                     />
@@ -160,10 +175,13 @@ class UserHome extends Component {
 }
 
 UserHome.defaultProps = {
+  experimentList: new List(),
   participantExists: false,
 };
 
 UserHome.propTypes = {
+  experimentList: PropTypes.instanceOf(List),
+  fetchAllExperimentsAsync: PropTypes.func.isRequired,
   createExperimentAsync: PropTypes.func.isRequired,
   clearExperimentData: PropTypes.func.isRequired,
   participantExists: PropTypes.bool,
@@ -171,11 +189,13 @@ UserHome.propTypes = {
 
 const mapStateToProps = state => ({
   participantExists: state.experiment.get('participantExists'),
+  experimentList: state.dashboard.get('experimentList'),
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
+      fetchAllExperimentsAsync,
       createExperimentAsync,
       clearExperimentData,
     },
