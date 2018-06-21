@@ -77,6 +77,7 @@ export const fetchParticipantData = async (...params) => {
     partID: key,
     date: value.date,
     weightedRating: value.weightedRating,
+    completed: value.completed,
   }));
 
   return {

@@ -26,7 +26,7 @@ const ErrorPage = class extends React.Component {
                   <p className="lead p-3"> {this.props.notification} </p>
                 </CardBody>
                 <CardFooter className="text-right">
-                  <Button color="primary" tag={NavLink} to="/">
+                  <Button color="primary" tag={NavLink} to="/tlx">
                     Return to Home
                   </Button>
                 </CardFooter>

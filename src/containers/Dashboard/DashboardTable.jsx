@@ -3,9 +3,59 @@ import PropTypes from 'prop-types';
 import { Row, Col, Table, Button } from 'reactstrap';
 import { List } from 'immutable';
 import { NavLink } from 'react-router-dom';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
+const processParticipantData = (participantList, expID) => {
+  let sum = 0;
+  let count = 0;
+  const chartData = [];
+
+  const tableData = participantList.filter(item => item.get('completed')).map((details, index) => {
+    const { partID, date, weightedRating } = details.toJS();
+
+    sum += weightedRating;
+    count += 1;
+    chartData.push({
+      name: partID,
+      weightedRating,
+    });
+
+    return (
+      <tr key={partID}>
+        <td> {index + 1} </td>
+        <td> {date} </td>
+        <th scope="row"> {partID} </th>
+        <td> {weightedRating} </td>
+        <td>
+          <Button tag={NavLink} to={`/rawData/${expID}/${partID}`} color="info">
+            View Raw Data
+          </Button>
+        </td>
+      </tr>
+    );
+  });
+
+  return {
+    tableData,
+    chartData,
+    average: (sum / count).toFixed(2),
+  };
+};
 
 const DashboardTable = (props) => {
-  const { expID } = props;
+  const { expID, participantList } = props;
+
+  const { tableData, average, chartData } = processParticipantData(participantList, expID);
 
   return (
     <Row>
@@ -24,39 +74,52 @@ const DashboardTable = (props) => {
             </tr>
           </thead>
           <tbody>
-            {props.participantList.map((details, index) => {
-              const { partID, date, weightedRating } = details.toJS();
-
-              return (
-                <tr key={partID}>
-                  <td> {index + 1} </td>
-                  <td> {date} </td>
-                  <th scope="row"> {partID} </th>
-                  <td> {weightedRating} </td>
-                  <td>
-                    <Button tag={NavLink} to={`/rawData/${expID}/${partID}`} color="primary">
-                      View Raw Data
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
+            {tableData}
+            <tr>
+              <td />
+              <td />
+              <th scope="row">Average weighted rating</th>
+              <td> {average} </td>
+              <td />
+            </tr>
           </tbody>
         </Table>
         <hr />
       </Col>
+      <h1 className="mt-3">Taskload chart of participants</h1>
+      <Row className="justify-content-center align-items-center w-100 mt-5 h-100">
+        <Col xs={12}>
+          <ResponsiveContainer width="100%" height={450}>
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis label={{ value: 'Participants', position: 'bottom' }} dataKey="name" />
+              <YAxis
+                label={{ value: 'Weighted Rating', angle: -90, position: 'insideLeft' }}
+                domain={[0, 100]}
+              />
+              <Tooltip />
+              <Legend align="left" verticalAlign="bottom" />
+              <Bar dataKey="weightedRating" fill="#8884d8" />
+              <ReferenceLine
+                y={parseFloat(average)}
+                stroke="red"
+                strokeDasharray="3 3"
+                label={{ value: `Average: ${average}`, position: 'insideBottom' }}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </Col>
+      </Row>
     </Row>
   );
 };
 
 DashboardTable.defaultProps = {
-  participantCount: 0,
   participantList: new List(),
 };
 
 DashboardTable.propTypes = {
   expID: PropTypes.string.isRequired,
-  participantCount: PropTypes.number,
   participantList: PropTypes.instanceOf(List),
 };
 

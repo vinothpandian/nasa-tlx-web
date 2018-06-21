@@ -4,28 +4,24 @@ import firebaseConfig from '../assets/firebaseConfig';
 
 firebase.initializeApp(firebaseConfig, 'auth');
 
-export const uiConfig = callback => ({
+export const uiConfig = {
+  signInSuccessUrl: '/tlx',
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
     firebase.auth.FacebookAuthProvider.PROVIDER_ID,
     firebase.auth.TwitterAuthProvider.PROVIDER_ID,
     firebase.auth.EmailAuthProvider.PROVIDER_ID,
   ],
-  tosUrl: '/',
-  callbacks: {
-    signInSuccessWithAuthResult: (authResult) => {
-      callback(authResult.user);
-      return false;
-    },
-  },
-});
-
-export const auth = firebase.auth();
-
-export const user = auth.currentUser;
+};
 
 export const signOut = async () => {
-  const status = await auth.signOut();
+  const status = await firebase
+    .auth()
+    .signOut()
+    .then(() => 'signOff')
+    .catch(error => error);
 
   return status;
 };
+
+export default firebase;

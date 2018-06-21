@@ -22,6 +22,7 @@ import UserNav from '../../components/UserNav';
 import { fetchAllExperimentsAsync, fetchAllParticipantsAsync } from '../../actions/dashboard';
 import Loading from '../../components/Loading';
 import DashboardTable from './DashboardTable';
+import ErrorPage from '../ErrorPage/index';
 
 const Dashboard = class extends React.Component {
   constructor(props) {
@@ -62,7 +63,19 @@ const Dashboard = class extends React.Component {
 
     const { expID } = this.state;
 
-    if (experimentCount === 0) return <Loading fullScreen />;
+    /* Default loading screen */
+    if (experimentCount === -1) return <Loading fullScreen />;
+
+    /* When no experiments found */
+    if (experimentCount === 0) {
+      return (
+        <ErrorPage
+          message="No experiments conducted"
+          notification="Come back later.."
+          clearExperiment={false}
+        />
+      );
+    }
 
     const dropDownMenu = experimentList.map(value => (
       <DropdownItem key={value} id={value} onClick={this.handleClick}>
@@ -81,18 +94,16 @@ const Dashboard = class extends React.Component {
                   <h4 className="font-weight-normal">Choose the Experiment Data to display</h4>
                   <div className="ml-auto">
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                      <DropdownToggle caret>{expID}</DropdownToggle>
+                      <DropdownToggle color="primary" caret>
+                        {expID}
+                      </DropdownToggle>
                       <DropdownMenu>{dropDownMenu}</DropdownMenu>
                     </Dropdown>
                   </div>
                 </CardHeader>
                 <CardBody>
                   {expID === 'Select' || (
-                    <DashboardTable
-                      participantCount={participantCount}
-                      participantList={participantList}
-                      expID={expID}
-                    />
+                    <DashboardTable participantList={participantList} expID={expID} />
                   )}
                 </CardBody>
               </Card>
@@ -105,7 +116,7 @@ const Dashboard = class extends React.Component {
 };
 
 Dashboard.defaultProps = {
-  experimentCount: 0,
+  experimentCount: -1,
   experimentList: new List(),
   participantCount: 0,
   participantList: new List(),

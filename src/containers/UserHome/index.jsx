@@ -15,15 +15,15 @@ import {
   Button,
   UncontrolledAlert,
 } from 'reactstrap';
-import { createExperimentAsync, clearExperimentData } from '../../../actions/experiments';
-import { FluidContainer, FullHeightRow } from '../../../components';
-import Menubar from '../../../components/Menubar';
-import UserNav from '../../../components/UserNav';
-import InputWithFeedback from '../../../components/InputWithFeedback';
+import { createExperimentAsync, clearExperimentData } from '../../actions/experiments';
+import { FluidContainer, FullHeightRow } from '../../components';
+import Menubar from '../../components/Menubar';
+import UserNav from '../../components/UserNav';
+import InputWithFeedback from '../../components/InputWithFeedback';
 
-const logo = require('../../../assets/NasaLogo.png');
+const logo = require('../../assets/NasaLogo.png');
 
-class ExperimentCard extends Component {
+class UserHome extends Component {
   constructor(props) {
     super(props);
 
@@ -161,11 +161,11 @@ class ExperimentCard extends Component {
   }
 }
 
-ExperimentCard.defaultProps = {
+UserHome.defaultProps = {
   participantExists: false,
 };
 
-ExperimentCard.propTypes = {
+UserHome.propTypes = {
   userID: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   createExperimentAsync: PropTypes.func.isRequired,
@@ -191,4 +191,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ExperimentCard);
+)(UserHome);
