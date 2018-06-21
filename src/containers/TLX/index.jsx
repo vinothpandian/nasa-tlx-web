@@ -6,15 +6,32 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
+import Loadable from 'react-loadable';
 import Menubar from '../../components/Menubar';
 import { FluidContainer } from '../../components';
-import AboutTLX from './AboutTLX';
-import Definitions from './Definitions';
-import RatingSheet from './RatingSheet';
-import CompareCards from './CompareCards';
 import { syncExpDataAsync } from '../../actions/experiments';
 import { store } from '../../store';
 import Loading from '../../components/Loading';
+
+const AboutTLX = Loadable({
+  loader: () => import('./AboutTLX'),
+  loading: () => <Loading />,
+});
+
+const Definitions = Loadable({
+  loader: () => import('./Definitions'),
+  loading: () => <Loading />,
+});
+
+const RatingSheet = Loadable({
+  loader: () => import('./RatingSheet'),
+  loading: () => <Loading />,
+});
+
+const CompareCards = Loadable({
+  loader: () => import('./CompareCards'),
+  loading: () => <Loading />,
+});
 
 const TLX = class extends React.Component {
   componentDidMount() {

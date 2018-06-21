@@ -1,15 +1,40 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
+import Loadable from 'react-loadable';
 import { history } from './store';
-
-import Home from './containers/Home';
-import TLX from './containers/TLX';
-import End from './containers/End';
-import RawData from './containers/RawData';
-import ErrorPage from './containers/ErrorPage';
-import Dashboard from './containers/Dashboard';
+import Loading from './components/Loading';
 import requireAuth from './requireAuth';
+
+const Home = Loadable({
+  loader: () => import('./containers/Home'),
+  loading: () => <Loading fullScreen />,
+});
+
+const TLX = Loadable({
+  loader: () => import('./containers/TLX'),
+  loading: () => <Loading fullScreen />,
+});
+
+const End = Loadable({
+  loader: () => import('./containers/End'),
+  loading: () => <Loading fullScreen />,
+});
+
+const RawData = Loadable({
+  loader: () => import('./containers/RawData'),
+  loading: () => <Loading fullScreen />,
+});
+
+const ErrorPage = Loadable({
+  loader: () => import('./containers/ErrorPage'),
+  loading: () => <Loading fullScreen />,
+});
+
+const Dashboard = Loadable({
+  loader: () => import('./containers/Dashboard'),
+  loading: () => <Loading fullScreen />,
+});
 
 const Routes = () => (
   <ConnectedRouter history={history}>
