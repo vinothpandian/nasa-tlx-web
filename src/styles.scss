@@ -1,3 +1,9 @@
+$theme-colors: (
+  "dark": #001c31,
+  "primary": #0066b2,
+  "secondary": #455969
+);
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
@@ -36,20 +42,44 @@
 
 @import "~rc-slider/assets/index.css";
 
+body {
+  padding-top: 59px;
+}
+
 #root {
   height: 100%;
 }
 
+$handle-color: #0066b2;
+$handle-width: 1.25rem;
+$handle-height: 1.25rem;
+$handle-border: 0.125rem;
+
 .rc-slider-handle {
-  background-color: $primary;
-  border: solid 2px $primary;
+  background-color: $handle-color;
+  margin-left: -($handle-width / 2);
+  margin-top: -(($handle-height / 2) - $handle-border);
+  width: $handle-width;
+  height: $handle-height;
+  border: solid $handle-border $handle-color;
   border-radius: 25%;
 }
 
 .rc-slider-dot {
   background-color: $gray-400;
-  width: 4px;
-  height: 8px;
+  width: 0.25rem;
+  height: 0.5rem;
   border: none;
   border-radius: 0;
+
+  &:nth-child(6) {
+    background-color: $gray-500;
+    width: 0.25rem;
+    height: 1rem;
+    bottom: -0.4rem;
+  }
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: hsla(0, 0%, 100%, 0.9);
 }

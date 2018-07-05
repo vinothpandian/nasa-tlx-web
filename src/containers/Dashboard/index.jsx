@@ -88,10 +88,10 @@ const Dashboard = class extends React.Component {
             <Col>
               <Card>
                 <CardHeader className="d-flex">
-                  <h4 className="font-weight-normal">Choose the Experiment Data to display</h4>
-                  <div className="ml-auto">
+                  <h4 className="font-weight-normal">Choose experiment ID to display its data</h4>
+                  <div className="ml-auto w-25">
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                      <DropdownToggle color="primary" caret>
+                      <DropdownToggle className="w-100" color="secondary" caret>
                         {expID}
                       </DropdownToggle>
                       <DropdownMenu>{dropDownMenu}</DropdownMenu>

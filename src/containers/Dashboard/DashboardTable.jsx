@@ -14,7 +14,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import ErrorPage from '../ErrorPage/index';
 
 const processParticipantData = (participantList, expID) => {
   let sum = 0;
@@ -38,7 +37,7 @@ const processParticipantData = (participantList, expID) => {
         <th scope="row"> {partID} </th>
         <td> {weightedRating} </td>
         <td>
-          <Button tag={NavLink} to={`/rawData/${expID}/${partID}`} color="info">
+          <Button tag={NavLink} to={`/rawData/${expID}/${partID}`} color="primary">
             View Raw Data
           </Button>
         </td>
@@ -97,30 +96,32 @@ const DashboardTable = (props) => {
         </Table>
         <hr />
       </Col>
-      <h1 className="mt-3">Taskload chart of participants</h1>
-      <Row className="justify-content-center align-items-center w-100 mt-5 h-100">
-        <Col xs={12}>
-          <ResponsiveContainer width="100%" height={450}>
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis label={{ value: 'Participants', position: 'bottom' }} dataKey="name" />
-              <YAxis
-                label={{ value: 'Weighted Rating', angle: -90, position: 'insideLeft' }}
-                domain={[0, 100]}
-              />
-              <Tooltip />
-              <Legend align="left" verticalAlign="bottom" />
-              <Bar dataKey="weightedRating" fill="#8884d8" />
-              <ReferenceLine
-                y={parseFloat(average)}
-                stroke="red"
-                strokeDasharray="3 3"
-                label={{ value: `Average: ${average}`, position: 'insideBottom' }}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </Col>
-      </Row>
+      <Col xs="12">
+        <h3 className="mt-3">Weighted-rating chart of participants</h3>
+        <Row className="justify-content-center align-items-center w-100 mt-5 h-100">
+          <Col xs={12}>
+            <ResponsiveContainer width="100%" height={450}>
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis label={{ value: 'Participants', position: 'bottom' }} dataKey="name" />
+                <YAxis
+                  label={{ value: 'Weighted Rating', angle: -90, position: 'insideLeft' }}
+                  domain={[0, 100]}
+                />
+                <Tooltip />
+                <Legend align="left" verticalAlign="bottom" />
+                <Bar dataKey="weightedRating" fill="#2E81C0" />
+                <ReferenceLine
+                  y={parseFloat(average)}
+                  stroke="red"
+                  strokeDasharray="3 3"
+                  label={{ value: `Average: ${average}`, position: 'insideBottom' }}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </Col>
+        </Row>
+      </Col>
     </Row>
   );
 };

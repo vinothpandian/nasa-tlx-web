@@ -2,10 +2,12 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Container, Row, Col, Card, CardHeader, CardBody } from 'reactstrap';
 import { StyledFirebaseAuth } from 'react-firebaseui';
+import { push } from 'react-router-redux';
 import Menubar from '../../components/Menubar';
 import { FluidContainer } from '../../components';
 import { auth, uiConfig } from '../../components/firebase';
 import About from './About';
+import { store } from '../../store/index';
 
 const Home = class extends React.Component {
   constructor(props) {
@@ -19,6 +21,10 @@ const Home = class extends React.Component {
   componentDidMount() {
     this.unregisterAuthObserver = auth.onAuthStateChanged((user) => {
       this.setState({ isSignedIn: !!user });
+
+      if (user) {
+        store.dispatch(push('/tlx'));
+      }
     });
   }
 

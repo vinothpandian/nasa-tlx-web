@@ -57,8 +57,7 @@ const InputWithAutocomplete = class extends React.Component {
       .slice(0, 5)
       .map(val => (
         <DropdownItem key={val} id={val} onClick={this.handleClick}>
-          {' '}
-          {val}{' '}
+          {val}
         </DropdownItem>
       ));
 
@@ -67,10 +66,12 @@ const InputWithAutocomplete = class extends React.Component {
         <Label for={name}>{label}</Label>
         <InputGroup>
           <Input id={name} name={name} onChange={this.handleChange} value={value} invalid={error} />
-          <InputGroupButtonDropdown addonType="append" isOpen={isOpen} toggle={this.toggle}>
-            <DropdownToggle split />
-            <DropdownMenu>{dropDownItems}</DropdownMenu>
-          </InputGroupButtonDropdown>
+          {items.size !== 0 && (
+            <InputGroupButtonDropdown addonType="append" isOpen={isOpen} toggle={this.toggle}>
+              <DropdownToggle split />
+              <DropdownMenu>{dropDownItems}</DropdownMenu>
+            </InputGroupButtonDropdown>
+          )}
           <FormFeedback invalid={error.toString()}>{errorText}</FormFeedback>
         </InputGroup>
         <FormText>{helperText}</FormText>
