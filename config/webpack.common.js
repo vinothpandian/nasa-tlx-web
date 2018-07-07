@@ -14,7 +14,7 @@ module.exports = {
   },
   output: {
     path: filePath.dist,
-    filename: '[name].[chunkhash].js',
+    filename: '[name].bundle.[chunkhash].js',
     publicPath: '/',
   },
   module: {
@@ -60,7 +60,6 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       inject: false,
-      hash: true,
       template: './src/index.html',
       filename: 'index.html',
     }),

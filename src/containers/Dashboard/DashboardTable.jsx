@@ -14,6 +14,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import { TH } from '../../components';
 
 const processParticipantData = (participantList, expID) => {
   let sum = 0;
@@ -73,14 +74,20 @@ const DashboardTable = (props) => {
         <h3>Experiment: {expID} </h3>
       </Col>
       <Col xs={12} className="mt-4">
-        <Table>
+        <Table responsive>
           <thead>
             <tr>
-              <th scope="col" />
-              <th scope="col">Date and Time</th>
-              <th scope="col">Participant ID</th>
-              <th scope="col">Weighted Rating</th>
-              <th scope="col" />
+              <TH className="col" width={10} scope="col" />
+              <TH className="col" width={18} scope="col">
+                Date and Time
+              </TH>
+              <TH className="col" width={18} scope="col">
+                Participant ID
+              </TH>
+              <TH className="col" width={18} scope="col">
+                Weighted Rating
+              </TH>
+              <TH className="col" width={18} scope="col" />
             </tr>
           </thead>
           <tbody>
@@ -97,8 +104,10 @@ const DashboardTable = (props) => {
         <hr />
       </Col>
       <Col xs="12">
-        <h3 className="mt-3">Weighted rating chart of participants</h3>
-        <Row className="justify-content-center align-items-center w-100 mt-5 h-100">
+        <h3>Weighted rating chart of participants</h3>
+      </Col>
+      <Col xs="12" className="mt-4">
+        <Row className="justify-content-center align-items-center">
           <Col xs={12}>
             <ResponsiveContainer width="100%" height={450}>
               <BarChart data={chartData}>

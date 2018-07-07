@@ -16,4 +16,8 @@ export const FullHeightRow = styled(Row)(props => ({
   height: 'calc(100% - 58.8px)',
 }));
 
+export const TH = styled.th(props => ({
+  width: `${props.width} !important`,
+}));
+
 export default null;

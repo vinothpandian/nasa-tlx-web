@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse } from 'reactstrap';
 import styled from 'react-emotion';
 
-const logo = require('../assets/NasaLogo.png');
+const logo = require('../assets/Logo-lite.png');
 
 const Image = styled.img({
   marginRight: '0.8rem',

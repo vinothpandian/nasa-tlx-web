@@ -4,6 +4,7 @@ import { ConnectedRouter } from 'react-router-redux';
 import Loadable from 'react-loadable';
 import { history } from './store';
 import Loading from './components/Loading';
+import End from './containers/End';
 import requireAuth from './requireAuth';
 
 const Home = Loadable({
@@ -18,11 +19,6 @@ const UserHome = Loadable({
 
 const TLX = Loadable({
   loader: () => import('./containers/TLX'),
-  loading: () => <Loading fullScreen />,
-});
-
-const End = Loadable({
-  loader: () => import('./containers/End'),
   loading: () => <Loading fullScreen />,
 });
 
