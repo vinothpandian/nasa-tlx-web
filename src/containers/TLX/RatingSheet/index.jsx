@@ -73,7 +73,7 @@ const RatingSheet = class extends React.Component {
   render() {
     const sliders = Object.keys(shortDefinitions)
       .splice(...this.state.choose)
-      .map((key) => {
+      .map((key, index) => {
         const scale = shortDefinitions[key];
 
         return (
@@ -86,6 +86,7 @@ const RatingSheet = class extends React.Component {
             rightValue={scale.rightValue}
             value={this.state.scale[key]}
             handleChange={this.handleChange}
+            divider={(index + 1) % 3 !== 0}
           />
         );
       });

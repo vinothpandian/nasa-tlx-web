@@ -30,7 +30,7 @@ const Menubar = class extends React.Component {
     const { nav, navBar, homeLink } = this.props;
 
     return (
-      <Navbar color="dark" dark expand="md">
+      <Navbar color="dark" dark expand="md" fixed="top">
         <NavbarBrand href={homeLink}>
           <Image src={logo} alt="Logo" width="36" />
           Nasa TLX

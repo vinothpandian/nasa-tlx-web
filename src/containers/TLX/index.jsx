@@ -35,9 +35,7 @@ const CompareCards = Loadable({
 
 const TLX = class extends React.Component {
   componentDidMount() {
-    const {
-      expID, partID, completed,
-    } = this.props;
+    const { expID, partID, completed } = this.props;
 
     if (completed) {
       store.dispatch(push('/'));

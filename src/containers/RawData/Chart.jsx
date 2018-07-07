@@ -39,7 +39,7 @@ const Chart = (props) => {
                     domain={[0, 'dataMax + 10']}
                   />
                   <Tooltip />
-                  <Bar dataKey="score" fill="#82ca9d">
+                  <Bar dataKey="score" fill="#2E81C0">
                     <LabelList dataKey="name" position="top" />
                   </Bar>
                   <Legend align="left" verticalAlign="bottom" />
@@ -55,7 +55,7 @@ const Chart = (props) => {
                   </XAxis>
                   <YAxis domain={[0, 100]} />
                   <Tooltip />
-                  <Bar dataKey="score" fill="#8884d8">
+                  <Bar dataKey="score" fill="#004B82">
                     <LabelList dataKey="tag" position="top" />
                   </Bar>
                   <Legend align="right" verticalAlign="bottom" />

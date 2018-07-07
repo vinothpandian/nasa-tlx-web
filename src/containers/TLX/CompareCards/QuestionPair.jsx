@@ -1,16 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Col, Row, Card, CardText } from 'reactstrap';
+import styled from 'react-emotion';
+import { Col, Row, Card, CardText, CardHeader, CardBody } from 'reactstrap';
 import { shortDefinitions } from '../../../assets/definitions';
+
+const ClickableCard = styled(Card)({
+  boxShadow: '0px 0px 6px 0px rgba(0,0,0,0.125)',
+  userSelect: 'none',
+  cursor: 'pointer',
+
+  '&:hover': {
+    boxShadow: '0px 4px 6px 0px rgba(0,0,0,0.125)',
+  },
+});
 
 const QuestionPair = (props) => {
   const Option = props.options.map(option => (
-    <Card tag={Col} key={option} lg={5} className="p-2 mt-4 mt-lg-0" body>
-      <Button color="primary" id={option} onClick={props.handleClick}>
+    <ClickableCard
+      tag={Col}
+      key={option}
+      id={option}
+      onClick={props.handleClick(option)}
+      lg={5}
+      className="p-0 mt-4 mt-lg-0"
+    >
+      <CardHeader className="bg-primary text-white" tag="h6">
         {option}
-      </Button>
-      <CardText className="p-2 text-left">{shortDefinitions[option].description}</CardText>
-    </Card>
+      </CardHeader>
+      <CardBody>
+        <CardText className="text-left">{shortDefinitions[option].description}</CardText>
+      </CardBody>
+    </ClickableCard>
   ));
 
   return <Row className="text-center justify-content-around align-items-stretch">{Option}</Row>;

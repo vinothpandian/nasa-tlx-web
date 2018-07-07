@@ -55,15 +55,13 @@ const CompareCards = class extends React.Component {
     return true;
   }
 
-  handleClick(event) {
-    const { id } = event.target;
-
+  handleClick = id => () => {
     this.setState(prevState => ({
       choices: _.drop(prevState.choices),
       currentChoice: prevState.choices[0],
       workload: { ...prevState.workload, [id]: prevState.workload[id] + 1 },
     }));
-  }
+  };
 
   render() {
     const { choices, currentChoice } = this.state;
