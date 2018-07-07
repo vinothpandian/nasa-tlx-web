@@ -25,7 +25,7 @@ import { getUserInfo } from '../../components/firebase';
 import { fetchAllExperimentsAsync } from '../../actions/dashboard';
 import InputWithAutocomplete from '../../components/InputWithAutocomplete';
 
-const logo = require('../../assets/NasaLogo.png');
+const logo = require('../../assets/Logo.png');
 
 class UserHome extends Component {
   constructor(props) {
@@ -118,16 +118,16 @@ class UserHome extends Component {
     return (
       <FluidContainer fluid>
         <Menubar navBar nav={<UserNav />} />
-        <Container>
+        <Container className="pt-5 pt-lg-0">
           <FullHeightRow justify="center" align="center">
-            <Col xs={8} sm={6} md={4} lg={3} className="my-4 my-md-0">
+            <Col xs={8} sm={6} md={4} lg={3} className="my-4 my-lg-0">
               <img src={logo} alt="NasaTLX" className="img-fluid" />
             </Col>
             <Col
               xs={11}
               md={{ size: 7, offset: 1 }}
               lg={{ size: 5, offset: 1 }}
-              className="text-left my-4 my-md-0"
+              className="text-left my-4 my-lg-0"
             >
               <Card>
                 <CardHeader tag="h4">Hello {username} </CardHeader>

@@ -69,7 +69,7 @@ const CompareCards = class extends React.Component {
     return (
       <Container>
         <Row className="justify-content-center align-items-center">
-          <Col xs={8}>
+          <Col md={10} lg={8}>
             <QuestionCard
               qNo={choices.length}
               options={currentChoice}

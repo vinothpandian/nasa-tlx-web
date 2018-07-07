@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardBody, CardTitle, Col, Table } from 'reactstrap';
 import PropTypes from 'prop-types';
+import { TH } from '../../components';
 
 const shortid = require('shortid');
 
@@ -12,13 +13,18 @@ function DataCard(props) {
     .sort()
     .forEach(([key, value]) => {
       const head = (
-        <th className="col-2 text-left align-baseline" key={shortid.generate()} scope="col">
+        <TH
+          width={16.67}
+          className="col text-left align-baseline"
+          key={shortid.generate()}
+          scope="col"
+        >
           {key}
-        </th>
+        </TH>
       );
 
       const field = (
-        <td className="col-2 text-left align-baseline " key={shortid.generate()}>
+        <td className="text-left align-baseline" key={shortid.generate()}>
           {value}
         </td>
       );
@@ -32,12 +38,12 @@ function DataCard(props) {
       <Card className="p-4">
         <CardTitle>{props.title}</CardTitle>
         <CardBody className="pb-0">
-          <Table>
+          <Table responsive>
             <thead>
-              <tr className="d-flex">{tableHead}</tr>
+              <tr>{tableHead}</tr>
             </thead>
             <tbody>
-              <tr className="d-flex">{tableContent}</tr>
+              <tr>{tableContent}</tr>
             </tbody>
           </Table>
         </CardBody>

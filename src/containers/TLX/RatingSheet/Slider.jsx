@@ -11,16 +11,16 @@ const marks = _.range(11).reduce((acc, key) => {
 
 const Slider = props => (
   <Row className="justify-content-center align-items-center">
-    <Col xs={4}>
+    <Col md={4}>
       <h5>{props.title}</h5>
       <p>{props.description}</p>
     </Col>
-    <Col xs={8}>
+    <Col md={8}>
       <Row className="align-items-center align-content-center" noGutters>
-        <Col xs={2} className="text-right align-middle pr-3">
+        <Col xs={3} sm={2} className="text-right align-middle pr-3">
           {props.leftValue}
         </Col>
-        <Col xs={8}>
+        <Col xs={6} sm={8}>
           <RCSlider
             min={0}
             max={100}
@@ -33,7 +33,7 @@ const Slider = props => (
             }}
           />
         </Col>
-        <Col xs={2} className="text-left align-middle pl-2">
+        <Col xs={3} sm={2} className="text-left align-middle pl-2">
           {props.rightValue}
         </Col>
       </Row>

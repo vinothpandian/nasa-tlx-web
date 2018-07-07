@@ -21,8 +21,8 @@ const QuestionPair = (props) => {
       key={option}
       id={option}
       onClick={props.handleClick(option)}
-      lg={5}
-      className="p-0 mt-4 mt-lg-0"
+      sm={5}
+      className="p-0 mt-4 mt-sm-0"
     >
       <CardHeader className="bg-primary text-white" tag="h6">
         {option}
@@ -33,7 +33,11 @@ const QuestionPair = (props) => {
     </ClickableCard>
   ));
 
-  return <Row className="text-center justify-content-around align-items-stretch">{Option}</Row>;
+  return (
+    <Row className="text-center justify-content-around align-items-stretch" noGutters>
+      {Option}
+    </Row>
+  );
 };
 
 QuestionPair.propTypes = {
