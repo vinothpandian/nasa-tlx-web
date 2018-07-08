@@ -104,7 +104,7 @@ const DashboardTable = (props) => {
         <hr />
       </Col>
       <Col xs="12">
-        <h3>Weighted-rating chart of participants</h3>
+        <h3>Weighted rating chart of participants</h3>
       </Col>
       <Col xs="12" className="mt-4">
         <Row className="justify-content-center align-items-center">
