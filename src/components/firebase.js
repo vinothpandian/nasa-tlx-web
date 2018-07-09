@@ -105,12 +105,12 @@ const jsToCSV = (data) => {
   let csvData =
     '"Participant ID","Date","Raw rating - Effort","Raw rating - Frustration Level","Raw rating - Mental Demand","Raw rating - Performance","Raw rating - Physical Demand","Raw rating - Temporal Demand","Workload tally - Effort","Workload tally - Frustration Level","Workload tally - Mental Demand","Workload tally - Performance","Workload tally - Physical Demand","Workload tally - Temporal Demand","Adjusted rating - Effort","Adjusted rating - Frustration Level","Adjusted rating - Mental Demand","Adjusted rating - Performance","Adjusted rating - Physical Demand","Adjusted rating - Temporal Demand"\r\n';
 
-  Object.entries(data).forEach(([key, value]) => {
+  data.forEach((value) => {
     const scale = Object.values(value.scale).join('","');
     const workload = Object.values(value.workload).join('","');
     const adjustedRating = Object.values(value.adjustedRating).join('","');
 
-    csvData = csvData.concat(`"${key}","${value.date}","${
+    csvData = csvData.concat(`"${value.partID}","${value.date}","${
       value.weightedRating
     }","${scale}","${workload},${adjustedRating}"\r\n`);
   });
@@ -132,7 +132,18 @@ export const fetchExperimentData = async (expID, format) => {
     };
   }
 
-  const dataObject = experimentData.exportVal();
+  const participantList = experimentData.exportVal();
+
+  const dataObject = Object.entries(participantList)
+    .filter(([key, value]) => value.completed)
+    .map(([key, value]) => ({
+      partID: key,
+      date: value.date,
+      weightedRating: value.weightedRating,
+      scale: value.scale,
+      workload: value.workload,
+      adjustedRating: value.adjustedRating,
+    }));
 
   let data = null;
 
