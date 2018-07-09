@@ -56,7 +56,7 @@ const Home = class extends React.Component {
             <Col md={7}>
               <About />
             </Col>
-            <Col md={5} className="mt-5">
+            <Col md={5} className="mt-5 mt-md-0">
               <Card>
                 <CardHeader tag="h4" className="font-weight-normal">
                   Login
