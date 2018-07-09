@@ -25,9 +25,9 @@ const UserNav = class extends React.Component {
     return (
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <NavLink className="nav-link" to="/dashboard">
+          <Button color="link" tag={NavLink} className="nav-link" to="/dashboard">
             Dashboard
-          </NavLink>
+          </Button>
         </NavItem>
         <NavItem>
           <Button onClick={this.handleClick} color="link" className="nav-link">

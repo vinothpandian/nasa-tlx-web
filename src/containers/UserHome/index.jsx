@@ -132,7 +132,7 @@ class UserHome extends Component {
               <Card>
                 <CardHeader tag="h4">Hello {username} </CardHeader>
                 <CardBody>
-                  <CardText>Fill the details below to get started</CardText>
+                  <CardText>Fill in the details below to get started</CardText>
                   <Form>
                     <InputWithAutocomplete
                       fetchItems={this.props.fetchAllExperimentsAsync}
