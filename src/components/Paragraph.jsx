@@ -4,9 +4,11 @@ import { Row, Col } from 'reactstrap';
 
 const Paragraph = props => (
   <Row className={props.className}>
-    <Col xs="12">
-      <h3>{props.title}</h3>
-    </Col>
+    {props.title && (
+      <Col xs="12">
+        <h3>{props.title}</h3>
+      </Col>
+    )}
     <Col xs="12" className="text-justify">
       {props.children}
     </Col>
@@ -20,7 +22,7 @@ Paragraph.defaultProps = {
 Paragraph.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string.isRequired,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
 };
 
 export default Paragraph;

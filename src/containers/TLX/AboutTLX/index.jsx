@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, Card, CardBody, CardFooter } from 'reactstrap';
+import { Row, Col, Button, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
 import { NavLink, withRouter } from 'react-router-dom';
 import Paragraph from '../../../components/Paragraph';
+import content from '../../../assets/instructions';
 
 const AboutTLX = (props) => {
   const { pathname } = props.location;
@@ -11,25 +12,12 @@ const AboutTLX = (props) => {
     <Row>
       <Col>
         <Card>
+          <CardHeader tag="h4">Instructions</CardHeader>
           <CardBody>
-            <Paragraph className="mt-0" title="About Nasa TLX">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos dignissimos quis
-              reiciendis molestiae, est iste dicta possimus delectus magnam nisi aspernatur dolores
-              veniam nam unde laborum error? Nesciunt totam quo sequi aliquam ex sint nisi
-              repudiandae tempore, impedit, fuga rem, nulla pariatur voluptatibus ipsum cumque modi!
-              Quis dolorum, aliquid itaque, animi earum iusto rem maiores fuga est dignissimos
-              dolores a expedita! Deserunt.
-            </Paragraph>
-            <Paragraph title="Procedure">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos dignissimos quis
-              reiciendis molestiae, est iste dicta possimus delectus magnam nisi aspernatur dolores
-              veniam nam unde laborum error? Nesciunt totam quo sequi aliquam ex sint nisi
-              repudiandae tempore, impedit, fuga rem, nulla pariatur voluptatibus ipsum cumque modi!
-              Quis dolorum, aliquid itaque, animi earum iusto rem maiores fuga est dignissimos
-              dolores a expedita! Deserunt, tenetur perspiciatis. Accusamus velit corrupti
-              laudantium autem labore. Expedita reprehenderit mollitia voluptatum ipsum harum esse
-              blanditiis enim suscipit aperiam. Cum est, ea vel distinctio odit expedita, veniam,
-              fuga atque reiciendis quos corrupti beatae eius voluptatibus? Fugiat, numquam magnam?
+            <Paragraph className="mt-3">
+              {content.instructions.map(paragraph => (
+                <p key={paragraph.slice(0, 10)}>{paragraph}</p>
+              ))}
             </Paragraph>
           </CardBody>
           <CardFooter className="text-right">

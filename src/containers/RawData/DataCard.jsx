@@ -37,7 +37,7 @@ function DataCard(props) {
     <Col xs={12} className="mt-4">
       <Card className="p-4">
         <CardTitle>{props.title}</CardTitle>
-        <CardBody className="pb-0">
+        <CardBody className="p-0">
           <Table responsive>
             <thead>
               <tr>{tableHead}</tr>

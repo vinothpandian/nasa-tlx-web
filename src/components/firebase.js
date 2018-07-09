@@ -81,7 +81,7 @@ export const storeData = async (experimentRef, data) => {
   await experimentRef.update(data);
 };
 
-export const fetchExperimentData = async () => {
+export const fetchExperimentList = async () => {
   const { userID } = await getUserInfo();
 
   const experimentRef = await database.ref(`/users/${userID}`);
@@ -97,6 +97,53 @@ export const fetchExperimentData = async () => {
 
   return {
     data: Object.keys(experimentData.exportVal()),
+    status,
+  };
+};
+
+const jsToCSV = (data) => {
+  let csvData =
+    '"Participant ID","Date","Raw rating - Effort","Raw rating - Frustration Level","Raw rating - Mental Demand","Raw rating - Performance","Raw rating - Physical Demand","Raw rating - Temporal Demand","Workload tally - Effort","Workload tally - Frustration Level","Workload tally - Mental Demand","Workload tally - Performance","Workload tally - Physical Demand","Workload tally - Temporal Demand","Adjusted rating - Effort","Adjusted rating - Frustration Level","Adjusted rating - Mental Demand","Adjusted rating - Performance","Adjusted rating - Physical Demand","Adjusted rating - Temporal Demand"\r\n';
+
+  Object.entries(data).forEach(([key, value]) => {
+    const scale = Object.values(value.scale).join('","');
+    const workload = Object.values(value.workload).join('","');
+    const adjustedRating = Object.values(value.adjustedRating).join('","');
+
+    csvData = csvData.concat(`"${key}","${value.date}","${
+      value.weightedRating
+    }","${scale}","${workload},${adjustedRating}"\r\n`);
+  });
+
+  return csvData;
+};
+
+export const fetchExperimentData = async (expID, format) => {
+  const { userID } = await getUserInfo();
+
+  const experimentRef = await database.ref(`/users/${userID}/${expID}`);
+  const experimentData = await experimentRef.once('value');
+
+  const status = experimentData.exists();
+
+  if (!status) {
+    return {
+      status,
+    };
+  }
+
+  const dataObject = experimentData.exportVal();
+
+  let data = null;
+
+  if (format === 'json') {
+    data = JSON.stringify(dataObject, null, 2);
+  } else if (format === 'csv') {
+    data = jsToCSV(dataObject);
+  }
+
+  return {
+    data,
     status,
   };
 };

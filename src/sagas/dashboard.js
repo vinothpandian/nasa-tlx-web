@@ -3,11 +3,16 @@ import {
   FETCH_ALL_EXPERIMENTS_ASYNC,
   FETCH_ALL_PARTICIPANTS_ASYNC,
   PUSH_TO_DASHBOARD,
+  FETCH_ALL_EXPERIMENT_DATA_ASYNC,
 } from '../actions/dashboard';
-import { fetchExperimentData, fetchParticipantData } from '../components/firebase';
+import {
+  fetchExperimentList,
+  fetchExperimentData,
+  fetchParticipantData,
+} from '../components/firebase';
 
 function* fetchAllExperimentsAsync() {
-  const { data, status } = yield call(fetchExperimentData);
+  const { data, status } = yield call(fetchExperimentList);
 
   if (status) {
     yield put({
@@ -15,6 +20,25 @@ function* fetchAllExperimentsAsync() {
       payload: {
         experimentCount: data.length,
         experimentList: data,
+      },
+    });
+  } else {
+    yield put({
+      type: PUSH_TO_DASHBOARD,
+      payload: { experimentCount: 0 },
+    });
+  }
+}
+
+function* fetchAllExperimentDataAsync() {
+  const { data, status } = yield call(fetchExperimentData);
+
+  if (status) {
+    yield put({
+      type: PUSH_TO_DASHBOARD,
+      payload: {
+        experimentCount: data.length,
+        experimentData: data,
       },
     });
   } else {
@@ -48,5 +72,6 @@ function* fetchAllParticipantsAsync(action) {
 
 export default function* watchDashboardActions() {
   yield takeEvery(FETCH_ALL_EXPERIMENTS_ASYNC, fetchAllExperimentsAsync);
+  yield takeEvery(FETCH_ALL_EXPERIMENT_DATA_ASYNC, fetchAllExperimentDataAsync);
   yield takeEvery(FETCH_ALL_PARTICIPANTS_ASYNC, fetchAllParticipantsAsync);
 }
