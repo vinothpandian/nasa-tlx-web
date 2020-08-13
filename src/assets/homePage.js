@@ -17,7 +17,7 @@ export default {
     `
     This open-source web version of NASA-TLX is built using React, Redux, Redux-Saga, 
     ReCharts, Bootstrap, Firebase database, and Firebase authentication.`,
-    'This version will be supported and updated based on user feedback will be added.',
+    'This version will be supported and updated based on user feedback.',
     'Contributions are welcome. You can find the source code in the GitHub link provide on the navbar.',
   ],
 };

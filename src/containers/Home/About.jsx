@@ -6,7 +6,7 @@ const About = () => (
   <div>
     <h1>Nasa TLX</h1>
     <hr />
-    <Paragraph>
+    <Paragraph title="">
       {content.background.map(paragraph => <p key={paragraph.slice(1, 20)}> {paragraph} </p>)}
 
       <p className="small text-secondary">
@@ -18,6 +18,11 @@ const About = () => (
     <Paragraph title="About this version">
       {content.aboutThisVersion.map(paragraph => <p key={paragraph.slice(1, 20)}> {paragraph} </p>)}
     </Paragraph>
+    <Paragraph title="Desktop version">
+      You can also use the <a href="https://github.com/vinothpandian/nasa-tlx-desktop" target="_blank" rel="noopener noreferrer">NASA-TLX desktop application</a> if you prefer to keep your data local instead of using Firebase.
+    </Paragraph>
+
+
   </div>
 );
 
