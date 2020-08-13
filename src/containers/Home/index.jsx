@@ -56,13 +56,17 @@ const Home = class extends React.Component {
             <Col md={7}>
               <About />
             </Col>
-            <Col md={5} className="mt-5">
+            <Col md={5} className="mt-5 mt-md-0">
               <Card>
                 <CardHeader tag="h4" className="font-weight-normal">
                   Login
                 </CardHeader>
-                <CardBody>
+                <CardBody style={{
+                  textAlign: 'center',
+                }}
+                >
                   <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
+                  <a href="https://www.termsfeed.com/live/518fbb7d-6736-48ab-b489-37d9ed5946a3" target="_blank" rel="noopener noreferrer" >Privacy Policy</a>
                 </CardBody>
               </Card>
             </Col>

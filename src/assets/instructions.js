@@ -79,18 +79,18 @@ export default {
   ],
   instructions: [
     `
-      The following assessment is used to measure your personal opinion on 
+      The following assessment is used to measure your subjective assessment on 
       how much workload was required of you during the task you just completed.
       `,
     `
-      In this assessment, you will first be asked to rate six workload measures.
+      You will be asked first to rate six workload measures.
       `,
     `
-      After you have completed the ratings, you will be asked to compare which of two 
-      workload measures is more important thant the other when considering the task you
+      After you have completed the ratings, you will be asked to compare which of the two 
+      workload measures played a more significant role than the other when considering the task you
       just completed. You will be asked to answer 15 of these pairings.
       `,
-    'There is no right or wrong answer',
+    'There is no right or wrong answer.',
     'When you are ready, click the Continue button to begin.',
   ],
 };
