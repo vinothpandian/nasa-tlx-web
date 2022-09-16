@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
-    "bootstrap": "^4.1.1",
+    "bootstrap": "^4.3.1",
     "emotion": "^9.2.3",
     "firebase": "^5.0.4",
     "firebaseui": "^3.0.0",
